@@ -25,50 +25,53 @@
  */
 typedef struct {
     /* PID Constants */
-    float Kp;
-    float Ki;
-    float Kd;
-    
+    float kp;
+    float ki;
+    float kd;
+
+    /* Control loop period (seconds) */
+    float dt;          
+
     /* Control limits */
-    float output_min;
-    float output_max;
+    float out_min;
+    float out_max;
     
     /* Controller internal state (persistent memory) */
-    float integral_sum;
+    float integrator;
     float prev_error;
     float setpoint;
 
-} PIDController_t;
+} pid_t;
 
 
 // --- Function Prototypes (The Module API) ---
 
 /**
  * @brief  Initializes a PID controller instance with specific gains.
- * @param  pid_instance Pointer to the PIDController_t structure to initialize.
- * @param  Kp Proportional gain.
- * @param  Ki Integral gain.
- * @param  Kd Derivative gain.
+ * @param  pid Pointer to the PIDController_t structure to initialize.
+ * @param  kp Proportional gain.
+ * @param  ki Integral gain.
+ * @param  kd Derivative gain.
+ * @param  dt Control loop period (seconds).
  * @param  min Minimum output limit.
  * @param  max Maximum output limit.
  */
-void PID_Init(PIDController_t *pid_instance, 
-              float Kp, float Ki, float Kd, 
-              float min, float max);
+void pid_init(pid_t *pid, float kp, float ki, float kd,
+              float dt, float min, float max);
 
 /**
  * @brief  Calculates the next control output based on the current feedback.
- * @param  pid_instance Pointer to the active PID structure.
- * @param  measured_value The current process feedback (e.g., motor speed).
+ * @param  pid Pointer to the active PID structure.
+ * @param  setpoint The current process target to achieve.
+ * @param  measurement The current process feedback (e.g., motor speed).
  * @retval The calculated control output value.
  */
-float PID_Calculate(PIDController_t *pid_instance, float measured_value);
+float pid_compute(pid_t *pid, float setpoint, float measurement);
 
 /**
  * @brief  Resets the integral sum of the PID controller to zero.
- * @param  pid_instance Pointer to the active PID structure.
+ * @param  pid Pointer to the active PID structure.
  */
-void PID_ResetIntegral(PIDController_t *pid_instance);
+void pid_reset(pid_t *pid);
 
-
-#endif /* PID_H_ end of include */
+#endif /* PID_H */
