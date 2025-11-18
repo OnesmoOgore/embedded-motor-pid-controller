@@ -15,5 +15,3 @@
 #include "motor.h"
 
 // Motor code
-
-// Motor code
