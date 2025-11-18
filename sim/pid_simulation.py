@@ -64,12 +64,12 @@ def build_firmware():
     result = subprocess.run(cmd, capture_output=True, text=True)
 
     if result.returncode != 0:
-        print("❌ Build failed:")
+        print("Build failed:")
         print(result.stdout)
         print(result.stderr)
         raise SystemExit(result.returncode)
 
-    print("✅ Build succeeded:", EXE_PATH)
+    print("Build succeeded:", EXE_PATH)
 
 
 # Run the executable and save its stdout to log.csv.
@@ -88,11 +88,11 @@ def run_firmware_and_capture_log():
         )
 
     if result.returncode != 0:
-        print("❌ Firmware run failed:")
+        print("Firmware run failed:")
         print(result.stderr)
         raise SystemExit(result.returncode)
 
-    print("✅ Log written to", LOG_FILE)
+    print("Log written to", LOG_FILE)
 
 
 # Load log.csv into numpy arrays.
