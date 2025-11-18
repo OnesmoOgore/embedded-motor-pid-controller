@@ -42,7 +42,7 @@ The firmware is designed with **modularity** and **portability** in mind,
 separating hardware abstraction (motor control) from the core algorithm
 (PID control). This approach makes it easy to:
 
-- Port the code to different microcontrollers / platforms
+- Port the code to different microcontrollers/platforms
 - Test the PID logic independently of hardware
 - Reuse the PID module in other projects
 
@@ -202,7 +202,7 @@ This architecture is intentionally simple and extendable:
   - PID core remains the same.
 
 - **Extending the controller:**
-  - Support for multiple motors / axes
+  - Support for multiple motors/axes
   - Additional control modes (e.g., position + velocity)
   - Feedforward terms or advanced filters
 
