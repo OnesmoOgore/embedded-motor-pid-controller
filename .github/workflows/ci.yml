@@ -8,7 +8,11 @@ on:
 
 jobs:
   build-and-simulate:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python-version: ["3.11"]
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Check out repository
@@ -17,14 +21,13 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: ${{ matrix.python-version }}
 
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
           pip install numpy matplotlib
-
-      # gcc is already installed on ubuntu-latest, but this is safe if you ever need build-essential
+          
       - name: Verify gcc
         run: gcc --version
 
@@ -32,3 +35,11 @@ jobs:
         run: |
           cd sim
           python pid_simulation.py
+          
+      - name: Upload simulation artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: pid-simulation-${{ matrix.os }}-py${{ matrix.python-version }}
+          path: |
+            sim/log.csv
+            sim/step_response.png
