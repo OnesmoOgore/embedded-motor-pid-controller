@@ -1,7 +1,7 @@
 # Embedded Motor PID Controller
 [![CI](https://github.com/OnesmoOgore/embedded-motor-pid-controller/actions/workflows/ci.yml/badge.svg)](https://github.com/OnesmoOgore/embedded-motor-pid-controller/actions)
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![Language](https://img.shields.io/badge/language-C%20%20&%20Python-brightgreen)
+ ![License](https://img.shields.io/badge/license-MIT-blue.svg)
+ ![Language](https://img.shields.io/badge/language-C%20%20&%20Python-brightgreen) ![Coverage](https://img.shields.io/badge/coverage-coming--soon-lightgrey)
 
 
 A modular embedded C and Python project demonstrating a PID speed controller for a DC motor.  
