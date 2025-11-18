@@ -17,6 +17,9 @@
 // Motor code
 // For now, this is just a stub. On a real MCU, this would wrap PWM, timers, etc.
 
+// Very simple first-order "plant" model for desktop tests.
+// Not physically accurate, but good enough for demonstrating the loop.
+
 static float current_speed = 0.0f;
 static float current_output = 0.0f;
 
@@ -40,7 +43,8 @@ void motor_set_output(float duty)
     // crude model: speed moves toward output * model_gain
     float target_speed = current_output * model_gain;
     float alpha = model_dt; // "response speed"
-    current_speed += 0.1f * (current_output - current_speed);
+
+    current_speed += alpha * (target_speed - current_speed);
 }
 
 float motor_get_speed(void)
