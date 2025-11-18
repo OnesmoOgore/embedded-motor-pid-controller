@@ -22,6 +22,11 @@ import sys
 from pathlib import Path
 
 import numpy as np
+import os
+import matplotlib
+# Use non-GUI backend when in CI
+if os.environ.get("CI") == "true":
+    matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 
@@ -126,7 +131,10 @@ def plot_response(step, setpoint, speed, control):
     plt.legend()
     plt.grid(True)
 
-    plt.show()
+    plt.tight_layout()
+    plt.savefig("step_response.png", dpi=150)
+    if os.environ.get("CI") != "true":
+        plt.show()
 
 
 def main():
