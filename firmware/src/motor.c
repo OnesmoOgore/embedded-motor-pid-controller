@@ -20,6 +20,11 @@
 static float current_speed = 0.0f;
 static float current_output = 0.0f;
 
+// pseudo "time step" for the model (seconds)
+static const float model_dt = 0.01f;
+// how quickly speed follows output
+static const float model_gain = 5.0f;
+
 void motor_init(void)
 {
     current_speed = 0.0f;
@@ -32,7 +37,9 @@ void motor_set_output(float duty)
     if (duty < -1.0f) duty = -1.0f;
     current_output = duty;
 
-    // Very crude fake physics: speed follows output
+    // crude model: speed moves toward output * model_gain
+    float target_speed = current_output * model_gain;
+    float alpha = model_dt; // "response speed"
     current_speed += 0.1f * (current_output - current_speed);
 }
 
