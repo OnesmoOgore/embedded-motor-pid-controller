@@ -27,7 +27,7 @@ This repo is MCU-agnostic. You can:
 - `firmware/src` — main loop, motor & PID modules
 - `firmware/include` — headers
 - `sim/` — Python simulation/plotting
-- `docs/` — design notes, block diagrams
+- `docs/` — design notes, block diagrams (see [`docs/architecture.md`](docs/architecture.md))
 
 ## Status
 
