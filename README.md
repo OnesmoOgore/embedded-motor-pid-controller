@@ -1,4 +1,8 @@
 # Embedded Motor PID Controller
+[![CI](https://github.com/OnesmoOgore/embedded-motor-pid-controller/actions/workflows/ci.yml/badge.svg)](https://github.com/OnesmoOgore/embedded-motor-pid-controller/actions)
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Language](https://img.shields.io/badge/language-C%20%20&%20Python-brightgreen)
+
 
 A modular embedded C and Python project demonstrating a PID speed controller for a DC motor.  
 Includes simulation tools, data logging, automated plotting, and a full multi-platform CI pipeline.
@@ -37,8 +41,8 @@ Designed for embedded, robotics, and controls-focused engineers who value struct
 - `firmware/include/` — header files  
 - `sim/` — Python simulation & plotting (`pid_simulation.py`)  
 - `docs/` — architecture diagrams, CI documentation  
-- `.github/workflows/` — CI matrix builds (Linux/macOS/Windows)  
-- `README.md`  
+- `.github/workflows/` — GitHub Actions CI workflow configuration  
+- `README.md` – Project overview, build instructions, and status
 
 ---
 
@@ -52,6 +56,7 @@ This repo is MCU-agnostic. You can:
 
 ## 🧠 Running the Simulation (Desktop)
 
+Bash shell command:
 ```bash
 cd sim
 python pid_simulation.py
@@ -62,6 +67,14 @@ This will:
 3. Generate log.csv
 4. Produce step_response.png
 5. Use GUI plotting locally, or a safe non-GUI backend in CI
+
+---
+
+## 📊 Example Step Response
+
+Here is an example step response produced by `sim/pid_simulation.py`:
+
+![Step response](docs/images/step_response_example.png)
 
 ---
 
@@ -86,10 +99,10 @@ You can browse previous runs and download artifacts in the Actions tab.
 - Simulation + plotting is fully functional
 - Multi-platform CI verified
 - Ready for enhancements:
--   Gain sweep automation
--   More realistic motor model
--   PID unit tests
--   GitHub Pages dashboard
+  - Gain sweep automation
+  - More realistic motor model
+  - PID unit tests
+  - GitHub Pages dashboard
 
 ---
 
@@ -99,3 +112,8 @@ This project is licensed under the MIT License.
 See [`LICENSE`](LICENSE) for details.
 
 ---
+
+## 📚 Documentation
+
+- [Architecture Overview](docs/architecture.md)
+- [CI Workflow Details](docs/ci.md)
