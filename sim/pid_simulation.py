@@ -48,6 +48,9 @@ def build_firmware():
 
     cmd = [
         "gcc",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
         f"-I{FIRMWARE_INC}",
         str(FIRMWARE_SRC / "main.c"),
         str(FIRMWARE_SRC / "pid.c"),
