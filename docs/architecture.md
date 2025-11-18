@@ -1,21 +1,20 @@
 # System Architecture Overview
 
-This document describes the high-level architecture and module breakdown of the
-`embedded-motor-pid-controller` project.
+This document describes the high-level architecture and module breakdown of the `embedded-motor-pid-controller` project.
 
-The goal of this project is to demonstrate a clean, portable PID-based motor
-speed controller in embedded C, with a matching Python simulation environment
-for tuning and validation.
+The goal of this project is to demonstrate a clean, portable PID-based motor speed controller in embedded C, with a matching Python simulation environment for tuning and validation.
 
 ---
 
 ## 1. Project Structure
 
-The project is divided into three main components:
+The project is divided into five main components:
 
 1. **`firmware/`** – the main embedded C application
-2. **`sim/`** – the Python simulation and analysis environment
-3. **`docs/`** – project documentation (including this file)
+2. **`sim/`** – Python-based simulation and analysis tools
+3. **`docs/`** – project documentation
+4. **`.github/`** – GitHub Actions CI workflow
+5. **`README.md`** – project overview, build instructions, and status
 
 ```text
 embedded-motor-pid-controller/
@@ -31,6 +30,10 @@ embedded-motor-pid-controller/
 │  ├─ pid_simulation.py
 ├─ docs/
 │  ├─ architecture.md
+│  ├─ ci.md
+├─ .github/
+│  ├─ workflows/
+│  │  ├─ ci.yml
 ├─ README.md
 ```
 
@@ -41,7 +44,6 @@ embedded-motor-pid-controller/
 The firmware is designed with **modularity** and **portability** in mind,
 separating hardware abstraction (motor control) from the core algorithm
 (PID control). This approach makes it easy to:
-
 - Port the code to different microcontrollers/platforms
 - Test the PID logic independently of hardware
 - Reuse the PID module in other projects
@@ -50,18 +52,18 @@ separating hardware abstraction (motor control) from the core algorithm
 
 | File(s)        | Module Name                         | Description                                                                                               | Dependencies          |
 |----------------|-------------------------------------|-----------------------------------------------------------------------------------------------------------|-----------------------|
-| `main.c`       | Application Entry / Control Loop    | System initialization, configuration loading, and main control loop (superloop or RTOS task wrapper).    | `motor`, `pid`        |
-| `motor.c/.h`   | Motor Control Abstraction Layer     | Low-level motor interface: configures GPIO/PWM, reads encoder feedback, exposes “set speed/output” API.  | Hardware-specific HAL |
-| `pid.c/.h`     | PID Control Algorithm               | Core PID math: error calculation, proportional/integral/derivative terms, output limiting/clamping, etc. | None (pure C)         |
+| `main.c`       | Application Entry / Control Loop    | System initialization, configuration loading, and main control loop (superloop or RTOS task wrapper).                      | `motor`, `pid`        |
+| `motor.c/.h`   | Motor Control Abstraction Layer     | Low-level motor interface: configures GPIO/PWM, reads encoder feedback, exposes a hardware-agnostic API.             | Hardware-specific HAL |
+| `pid.c/.h`     | PID Control Algorithm               | Core PID math: error calculation, proportional/integral/derivative terms, output limiting/clamping, and state management. | None (pure C)              |
 
 ### 2.2 Responsibilities
 
 - **`main.c`**
-  - Initializes the system (clock, peripherals, motor, PID configuration).
-  - Implements the periodic control loop:
-    - Reads the current motor speed/position from `motor`.
-    - Calls the `pid` module with setpoint + measured value.
-    - Sends the resulting control effort back to the `motor` module.
+  - Initializes the system resources (clock, peripherals, motor, PID configuration).
+  - Runs the periodic control loop:
+    - Reads motor speed/position via `motor_get_speed()`.
+    - Calls `pid_compute()` with setpoint and measurement.
+    - Sends control output to motor via `motor_set_output()`. module.
   - May optionally handle:
     - Simple command interface (e.g., changing setpoint)
     - Fault handling / safe shutdown
@@ -69,16 +71,15 @@ separating hardware abstraction (motor control) from the core algorithm
 - **`motor.c/.h`**
   - Encapsulates all hardware-specific details:
     - PWM channel configuration
-    - Timer / encoder setup
     - Reading sensor/encoder counts
-  - Provides a **hardware-agnostic API**, for example:
+  - Exposes a portable API:
     - `motor_init(...)`
-    - `motor_set_output(int16_t duty)`
+    - `motor_set_output(float duty)` (typically -1.0 to +1.0)
     - `motor_get_speed(void)`
-  - This file is the main porting point when moving to a new MCU.
+  - Primary location for porting when targeting new hardware.
 
 - **`pid.c/.h`**
-  - Contains a PID state struct (e.g. error terms, integral accumulator).
+  - Contains a PID state struct (error terms, integrator, derivative history).
   - Implements:
     - `pid_init(...)`
     - `pid_compute(setpoint, measurement)`
@@ -111,29 +112,22 @@ graph TD
 ### 3.1 Flow Description
 
 1. **Input (Feedback):**  
-   The motor encoder (or other sensor) provides feedback via hardware
-   peripherals (timers, ADC, capture units, etc.).
-
-2. **Abstraction (Motor Module):**  
-   The `motor` module reads this feedback and computes a physical quantity
-   such as speed (e.g., RPM) or position (e.g., encoder counts).
-
-3. **Control Loop (Application):**  
+   The motor encoder (or other sensor) provides feedback via hardware peripherals (timers, ADC, capture units, etc.).
+2. **Motor Abstraction Layer:**  
+   `motor.c` converts raw data (counts, pulses) into meaningful units (e.g., speed).
+3. **Application Control Loop:**  
    The main control loop in `main.c`:
    - Reads the **setpoint** (desired speed/position).
    - Reads the **measurement** from the `motor` module.
    - Calls the `pid` module to compute the control effort.
-
-4. **Processing (PID Module):**  
-   The `pid` module calculates the control output using:
+4. **PID Processing:**  
+   `pid.c` calculates the required control effort using:
    - Proportional term (P)
    - Integral term (I)
    - Derivative term (D)
-   and applies any clamping / anti-windup to keep the output in a safe range.
-
+   and applies any clamping/anti-windup to keep the output in a safe range.
 5. **Output (Actuation):**  
-   The `motor` module receives the control effort and converts it into
-   a physical action (e.g., PWM duty cycle), which drives the motor.
+   The `motor` module receives the control effort from `motor_set_output()` and converts it into a physical action (e.g., PWM duty cycle), which drives the motor.
 
 ---
 
@@ -141,55 +135,56 @@ graph TD
 
 The control loop can be executed in one of two ways:
 
-1. **Superloop (bare-metal):**
+1. **Bare-Metal Superloop:**
    - `main.c` runs an infinite loop that:
      - Waits for a fixed time slice (e.g., via a timer flag)
      - Executes the control loop at a fixed frequency (e.g., 1 kHz)
    - Simple and works well for basic demos.
 
-2. **RTOS Task (optional):**
+2. **RTOS Task:**
    - The PID control logic is run in a periodic RTOS task.
    - Allows separation between:
      - Control tasks
-     - Communication / UI tasks
-     - Logging / diagnostics
+     - Communication/UI tasks
+     - Logging/diagnostics
 
-The current project is kept **MCU-agnostic**, so timing details are left to
-the porting layer or example implementations.
+The current project is kept **MCU-agnostic**, so timing details are left to the porting layer or example implementations.
 
 ---
 
 ## 5. Simulation Environment
 
-The `sim/pid_simulation.py` file implements a **Python-based simulation** of
-the motor + PID loop.
+The `sim/pid_simulation.py` file implements a **Python-based simulation** of the motor + PID loop.
+- Compiles firmware using gcc with strict flags  
+- Runs the resulting executable
+- Generates log.csv (step, setpoint, speed, control output)  
+- Produces step_response.png  
+- Uses a non-GUI backend in CI and GUI when running locally
 
 ### 5.1 Purpose
 
-- Mirrors the C PID logic to validate:
-  - Step response
-  - Overshoot
-  - Settling time
-  - Steady-state error
-- Enables **offline tuning** of PID gains (`Kp`, `Ki`, `Kd`) against a
-  simple motor model before flashing firmware onto actual hardware.
+- Validate the behavior of the C PID implementation
+- Visualize:
+ - Step response
+ - Overshoot
+ - Settling time
+ - Steady-state error
+- Allow **offline PID tuning** before deploying to real hardware
 
 ### 5.2 Tools and Libraries
 
 Typical dependencies (to be listed in the README or requirements file):
-
 - `numpy` – numerical calculations and discrete-time simulation
 - `matplotlib` – plotting responses (e.g., setpoint vs. output, error over time)
 
 ### 5.3 Workflow
 
-1. Define or load a motor model (e.g., first-order system).
-2. Implement a PID controller in Python that matches the C implementation.
-3. Run simulations for various:
-   - Gains (`Kp`, `Ki`, `Kd`)
-   - Step inputs
-   - Disturbances (e.g., load changes)
-4. Once satisfactory tuning is achieved, transfer the gains into the embedded firmware.
+1. Build the firmware binary using gcc.
+2. Run the binary to generate `log.csv` (step, setpoint, speed, control output).
+3. Load `log.csv` in Python and plot the result.
+4. Adjust PID gains and repeat.
+
+> Future extension: implement faster gain sweeps and analytical experiments.
 
 ---
 
@@ -209,6 +204,28 @@ This architecture is intentionally simple and extendable:
 - **Integrating with larger systems:**
   - Expose a simple API or protocol for higher-level control (e.g., via UART/CAN).
   - Wrap the firmware in an RTOS-based application with communication tasks.
+
+---
+
+## 7. Continuous Integration Summary
+
+- Runs on Ubuntu, Windows  
+- Python 3.11  
+- Artifacts uploaded per job (log.csv and step_response.png)  
+- Ensures:
+  - Clean firmware builds (-Wall -Wextra -Werror)
+  - Successful simulation execution
+  - Cross-platform reproducibility
+
+---
+
+## 8. Future Enhancements
+
+- More realistic motor model  
+- CLI-based gain sweeping  
+- Unit tests for PID
+- GitHub Pages dashboard for simulation results
+- GitHub Pages results dashboard
 
 ---
 
