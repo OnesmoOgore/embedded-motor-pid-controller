@@ -20,7 +20,6 @@
 
 /**
  * @brief  PID Controller structure instance definition.
- * 
  * This structure holds the state and configuration of a single PID loop.
  */
 typedef struct {
@@ -39,8 +38,6 @@ typedef struct {
     /* Controller internal state (persistent memory) */
     float integrator;
     float prev_error;
-    float setpoint;
-
 } pid_t;
 
 
@@ -53,11 +50,16 @@ typedef struct {
  * @param  ki Integral gain.
  * @param  kd Derivative gain.
  * @param  dt Control loop period (seconds).
- * @param  min Minimum output limit.
- * @param  max Maximum output limit.
+ * @param  out_min Minimum output limit.
+ * @param  out_max Maximum output limit.
  */
-void pid_init(pid_t *pid, float kp, float ki, float kd,
-              float dt, float min, float max);
+void pid_init(pid_t *pid,
+              float kp, 
+              float ki, 
+              float kd,
+              float dt,
+              float out_min,
+              float out_max);
 
 /**
  * @brief  Calculates the next control output based on the current feedback.
