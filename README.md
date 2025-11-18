@@ -2,6 +2,12 @@
 
 Small embedded C project showing a basic PID speed controller for a DC motor.
 
+## What this demonstrates
+
+- Modular embedded C firmware (separating hardware abstraction and control logic)
+- A reusable PID controller module
+- A matching Python simulation for offline tuning
+
 ## Features
 
 - Fixed-point friendly PID implementation
@@ -22,3 +28,7 @@ This repo is MCU-agnostic. You can:
 - `firmware/include` — headers
 - `sim/` — Python simulation/plotting
 - `docs/` — design notes, block diagrams
+
+## Status
+
+> Work in progress – code and examples are being added.
