@@ -1,0 +1,4 @@
+theme: jekyll-theme-cayman
+title: Embedded Motor PID Controller
+description: Firmware architecture, simulation tools, and control system design.
+markdown: GFM
