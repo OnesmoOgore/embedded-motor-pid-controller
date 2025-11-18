@@ -21,4 +21,32 @@
 #include <stdio.h>
 
 // Main application code
+int main(void)
+{
+    motor_init();
 
+    pid_t pid;
+    pid_init(&pid,
+             0.8f,   // Kp
+             0.3f,   // Ki
+             0.05f,  // Kd
+             0.01f,  // dt (s)
+             -1.0f,  // out_min
+             1.0f);  // out_max
+
+    float setpoint = 3.0f; // desired speed (arbitrary units)
+
+    // simple "control loop" running in a for loop instead of a timer
+    for (int step = 0; step < 1000; ++step)
+    {
+        float speed = motor_get_speed();
+        float u = pid_compute(&pid, setpoint, speed);
+
+        motor_set_output(u);
+
+        // For now, just print to stdout (desktop build)
+        printf("%d,%.4f,%.4f,%.4f\n", step, setpoint, speed, u);
+    }
+
+    return 0;
+}
