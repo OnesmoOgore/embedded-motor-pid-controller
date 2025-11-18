@@ -19,17 +19,16 @@ Every push and pull request triggers:
 
 | OS              | Python Versions |
 |-----------------|-----------------|
-| Ubuntu‑latest   | 3.10, 3.11      |
-| macOS‑latest    | 3.10, 3.11      |
-| Windows‑latest  | 3.10, 3.11      |
+| Ubuntu‑latest   | 3.11            |
+| Windows‑latest  | 3.11            |
 
-A total of **6 jobs per workflow**.
+A total of **2 jobs per workflow**.
 
 ---
 
 ## Workflow Steps
 
-1. Check out repository  
+1. Check out the repository  
 2. Install Python + deps  
 3. Verify gcc  
 4. Run simulation script  
