@@ -15,12 +15,27 @@
 #include "pid.h"
 
 // PID code
-void pid_init(pid_t *pid, float kp, float ki, float kd, float dt, float out_min, float out_max)
+
+static float clamp(float value, float min, float max)
+{
+    if (value > max) return max;
+    if (value < min) return min;
+    return value;
+}
+
+void pid_init(pid_t *pid,
+              float kp,
+              float ki,
+              float kd,
+              float dt,
+              float out_min,
+              float out_max)
 {
     pid->kp = kp;
     pid->ki = ki;
     pid->kd = kd;
     pid->dt = dt;
+    
     pid->integrator = 0.0f;
     pid->prev_error = 0.0f;
     pid->out_min = out_min;
@@ -44,11 +59,8 @@ float pid_compute(pid_t *pid, float setpoint, float measurement)
 
     float output = p + i + d;
 
-    // Clamp output
-    if (output > pid->out_max)
-        output = pid->out_max;
-    else if (output < pid->out_min)
-        output = pid->out_min;
+    // Clamp output and anti-windup (simple: clamp integrator via output)
+    output = clamp(output, pid->out_min, pid->out_max);
 
     pid->prev_error = error;
 
