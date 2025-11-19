@@ -119,14 +119,14 @@ def build_firmware() -> None:
     result = subprocess.run(cmd, capture_output=True, text=True)
 
     if result.returncode != 0:
-        print("❌ BUILD FAILED")
+        print("[FAIL] BUILD FAILED")
         print("\nCompiler output:")
         print(result.stdout)
         print("\nCompiler errors:")
         print(result.stderr)
         raise SystemExit(result.returncode)
 
-    print(f"✅ Build succeeded: {EXE_PATH}")
+    print(f"[OK] Build succeeded: {EXE_PATH}")
     print()
 
 #===============================================================================
@@ -181,12 +181,12 @@ def run_firmware_and_capture_log() -> None:
         )
 
     if result.returncode != 0:
-        print("❌ SIMULATION FAILED")
+        print("[FAIL] SIMULATION FAILED")
         print("\nError output:")
         print(result.stderr)
         raise SystemExit(result.returncode)
 
-    print(f"✅ Simulation complete: {LOG_FILE}")
+    print(f"[OK] Simulation complete: {LOG_FILE}")
     print()
 
 #===============================================================================
@@ -251,11 +251,11 @@ def load_log() -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     speed = data[:, 2]      # Measured speed (process variable)
     control = data[:, 3]    # Control output (manipulated variable)
 
-    print(f"✅ Loaded {len(step)} data points")
-    print(f"   Time span: {len(step) * SAMPLE_TIME_SEC:.2f} seconds")
-    print(f"   Setpoint range: [{setpoint.min():.3f}, {setpoint.max():.3f}]")
-    print(f"   Speed range: [{speed.min():.3f}, {speed.max():.3f}]")
-    print(f"   Control range: [{control.min():.3f}, {control.max():.3f}]")
+    print(f"[OK] Loaded {len(step)} data points")
+    print(f"     Time span: {len(step) * SAMPLE_TIME_SEC:.2f} seconds")
+    print(f"     Setpoint range: [{setpoint.min():.3f}, {setpoint.max():.3f}]")
+    print(f"     Speed range: [{speed.min():.3f}, {speed.max():.3f}]")
+    print(f"     Control range: [{control.min():.3f}, {control.max():.3f}]")
     print()
 
     return step, setpoint, speed, control
@@ -376,14 +376,14 @@ def plot_response(step: np.ndarray,
     #---------------------------------------------------------------------------
     plt.tight_layout()
     plt.savefig("step_response.png", dpi=150, bbox_inches='tight')
-    print(f"✅ Plot saved: step_response.png")
+    print("[OK] Plot saved: step_response.png")
 
     # Show interactive plot (unless in CI mode)
     if os.environ.get("CI") != "true":
-        print("   Opening interactive plot window...")
+        print("     Opening interactive plot window...")
         plt.show()
     else:
-        print("   CI mode detected - skipping interactive display")
+        print("     CI mode detected - skipping interactive display")
 
     print()
 
@@ -431,7 +431,7 @@ def main() -> None:
         plot_response(step, setpoint, speed, control)
 
         print("=" * 70)
-        print("✅ SIMULATION COMPLETE")
+        print("SIMULATION COMPLETE - SUCCESS")
         print("=" * 70)
         print()
         print("Output files:")
@@ -442,7 +442,7 @@ def main() -> None:
     except Exception as e:
         print()
         print("=" * 70)
-        print("❌ SIMULATION FAILED")
+        print("SIMULATION FAILED - ERROR")
         print("=" * 70)
         print(f"Error: {e}")
         print()
