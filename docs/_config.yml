@@ -15,8 +15,8 @@ repository: OnesmoOgore/embedded-motor-pid-controller
 # Version
 version: 1.0.0
 
-# Google Analytics (optional - replace with your tracking ID)
-# google_analytics: UA-XXXXXXXXX-X
+# Google Analytics
+google_analytics: G-Q1E976J5EY
 
 # Social links (optional - update with your profiles)
 github_username: OnesmoOgore
