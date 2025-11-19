@@ -29,15 +29,24 @@ typedef struct {
     float kd;
 
     /* Control loop period (seconds) */
-    float dt;          
+    float dt;
 
     /* Control limits */
     float out_min;
     float out_max;
-    
+
+    /* Integrator limits (for anti-windup) */
+    float integrator_min;
+    float integrator_max;
+
+    /* Derivative filter coefficient (0 = no filter, 1 = max filter) */
+    float derivative_lpf;
+
     /* Controller internal state (persistent memory) */
     float integrator;
     float prev_error;
+    float prev_measurement;  /* For derivative-on-measurement */
+    float derivative_filtered; /* Filtered derivative term */
 } pid_t;
 
 
@@ -54,12 +63,36 @@ typedef struct {
  * @param  out_max Maximum output limit.
  */
 void pid_init(pid_t *pid,
-              float kp, 
-              float ki, 
+              float kp,
+              float ki,
               float kd,
               float dt,
               float out_min,
               float out_max);
+
+/**
+ * @brief  Initializes a PID controller with advanced options.
+ * @param  pid Pointer to the PIDController_t structure to initialize.
+ * @param  kp Proportional gain.
+ * @param  ki Integral gain.
+ * @param  kd Derivative gain.
+ * @param  dt Control loop period (seconds).
+ * @param  out_min Minimum output limit.
+ * @param  out_max Maximum output limit.
+ * @param  integrator_min Minimum integrator limit (anti-windup).
+ * @param  integrator_max Maximum integrator limit (anti-windup).
+ * @param  derivative_lpf Derivative low-pass filter coefficient (0.0-1.0).
+ */
+void pid_init_advanced(pid_t *pid,
+                      float kp,
+                      float ki,
+                      float kd,
+                      float dt,
+                      float out_min,
+                      float out_max,
+                      float integrator_min,
+                      float integrator_max,
+                      float derivative_lpf);
 
 /**
  * @brief  Calculates the next control output based on the current feedback.

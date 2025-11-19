@@ -1,4 +1,4 @@
-name: Build and simulate PID controller
+name: Build and Test PID Controller
 
 on:
   push:
@@ -7,7 +7,34 @@ on:
     branches: [ main ]
 
 jobs:
-  build-and-simulate:
+  test:
+    name: Unit Tests
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install CMake
+        uses: lukka/get-cmake@latest
+
+      - name: Clone Unity test framework
+        run: git clone https://github.com/ThrowTheSwitch/Unity.git tests/Unity
+
+      - name: Configure CMake
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: cmake --build build --config Release
+
+      - name: Run tests
+        run: ctest --test-dir build --output-on-failure -C Release
+
+  simulate:
+    name: Python Simulation
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
@@ -24,18 +51,16 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Install Python dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install numpy matplotlib
-          
+        run: pip install -r requirements.txt
+
       - name: Verify gcc
         run: gcc --version
 
-      - name: Run C build + simulation script
+      - name: Run simulation
         run: |
           cd sim
           python pid_simulation.py
-          
+
       - name: Upload simulation artifacts
         uses: actions/upload-artifact@v4
         with:
