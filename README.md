@@ -61,17 +61,25 @@ embedded-motor-pid-controller/
 ├── firmware/
 │   ├── src/          # PID controller, motor model, main loop
 │   └── include/      # Public API headers
-├── tests/            # Unit tests (Unity framework)
+├── tests/
+│   └── test_pid.c    # Unit tests (Unity framework)
 ├── sim/              # Python simulation & plotting
+│   └── pid_simulation.py
 ├── docs/             # Documentation
+│   ├── images/       # Documentation images
 │   ├── BUILD.md      # Build instructions
-│   ├── IMPROVEMENTS.md  # Detailed improvements documentation
 │   ├── architecture.md  # System architecture
-│   └── ci.md         # CI/CD documentation
-├── .github/workflows/  # CI configuration
+│   ├── ci.md         # CI/CD documentation
+│   ├── index.md      # GitHub Pages landing page
+│   └── _config.yml   # Jekyll configuration
+├── .github/
+│   └── workflows/
+│       └── ci.yml    # CI/CD configuration
+├── CHANGELOG.md      # Version history
 ├── CMakeLists.txt    # Build system configuration
 ├── Doxyfile          # API documentation configuration
-└── requirements.txt  # Python dependencies
+├── requirements.txt  # Python dependencies
+└── LICENSE           # MIT License
 ```
 
 ---
