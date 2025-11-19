@@ -140,17 +140,24 @@ float output = pid_compute(&motor_pid, setpoint, measurement);
 
 ## 🧠 Running the Simulation (Desktop)
 
-Bash shell command:
+### Prerequisites
+```bash
+# Install Python dependencies
+pip install -r requirements.txt
+```
+
+### Run Simulation
 ```bash
 cd sim
 python pid_simulation.py
 ```
+
 This will:
 1. Compile the firmware using gcc
 2. Run the closed-loop simulation
-3. Generate log.csv
-4. Produce step_response.png
-5. Use GUI plotting locally, or a safe non-GUI backend in CI
+3. Generate `log.csv` with time-series data
+4. Produce `step_response.png` plot
+5. Display the plot (GUI) or save only (CI mode)
 
 ---
 
