@@ -211,7 +211,7 @@ See [`LICENSE`](LICENSE) for details.
 ## 📚 Documentation
 
 - **[Build Instructions](docs/BUILD.md)** - Comprehensive build guide
-- **[Improvements Overview](docs/IMPROVEMENTS.md)** - Detailed changelog of enhancements
+- **[Changelog](CHANGELOG.md)** - Version history and detailed release notes
 - **[Architecture Overview](docs/architecture.md)** - System design
 - **[CI Workflow Details](docs/ci.md)** - CI/CD pipeline
 
