@@ -430,25 +430,6 @@ The simulation enables offline analysis of:
 
 ---
 
-## 6. Portability and Extension Points
-
-This architecture is intentionally simple and extendable:
-
-- **Porting to new hardware:**
-  - Only `motor.c/.h` and platform-specific startup code need changes.
-  - PID core remains the same.
-
-- **Extending the controller:**
-  - Support for multiple motors/axes
-  - Additional control modes (e.g., position + velocity)
-  - Feedforward terms or advanced filters
-
-- **Integrating with larger systems:**
-  - Expose a simple API or protocol for higher-level control (e.g., via UART/CAN).
-  - Wrap the firmware in an RTOS-based application with communication tasks.
-
----
-
 ## 8. Continuous Integration & Deployment (CI/CD)
 
 ### 8.1 GitHub Actions Workflow
@@ -527,6 +508,16 @@ Commit/PR Trigger
 - Build logs accessible to all
 - Test failure notifications
 - Pull request integration
+
+### 8.5 Accessing CI Artifacts
+
+**Download Simulation Results:**
+1. Navigate to [Actions tab](https://github.com/OnesmoOgore/embedded-motor-pid-controller/actions)
+2. Select a workflow run
+3. Download artifacts named: `pid-simulation-<os>-py<version>`
+4. Extract to view:
+   - `log.csv` - Time-series simulation data
+   - `step_response.png` - Response plot visualization
 
 ---
 
@@ -620,40 +611,7 @@ pid_init(&motor2_pid, ...);
 
 ---
 
-## 11. Continuous Integration & Deployment
-
-### CI Workflow
-
-GitHub Actions automatically tests every commit and pull request:
-
-**Build Matrix:**
-- **Platforms:** Ubuntu (latest), Windows (latest)
-- **Python:** 3.11
-- **Total:** 2 parallel jobs per workflow
-
-**Workflow Steps:**
-1. Check out repository
-2. Install Python dependencies
-3. Verify GCC compiler availability
-4. Run simulation script (`sim/pid_simulation.py`)
-5. Upload artifacts:
-   - `log.csv` - Simulation data
-   - `step_response.png` - Response plot
-
-**Accessing Artifacts:**
-1. Navigate to [Actions tab](https://github.com/OnesmoOgore/embedded-motor-pid-controller/actions)
-2. Select a workflow run
-3. Download artifacts named: `pid-simulation-<os>-py<version>`
-4. Extract to view logs and plots
-
-**Quality Gates:**
-- Strict compilation warnings (`-Wall -Wextra -Werror`)
-- Zero-tolerance for warnings
-- Cross-platform verification
-
----
-
-## 12. Future Roadmap
+## 11. Future Roadmap
 
 ### Planned Enhancements
 
@@ -679,7 +637,7 @@ GitHub Actions automatically tests every commit and pull request:
 
 ---
 
-## 13. Summary
+## 12. Summary
 
 This architecture demonstrates professional embedded systems development:
 
