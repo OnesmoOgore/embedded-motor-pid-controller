@@ -26,8 +26,10 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
-      with:
-        submodules: recursive
+
+    - name: Clone Unity test framework
+      if: matrix.language == 'c-cpp'
+      run: git clone https://github.com/ThrowTheSwitch/Unity.git tests/Unity
 
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v4
