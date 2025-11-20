@@ -28,11 +28,13 @@ static float current_speed = 0.0f;
  */
 static float current_output = 0.0f;
 
-/* Model parameters */
-static const float model_dt = 0.01f;      /* 10ms time step */
-static const float model_tau = 0.2f;      /* 200ms time constant */
+/* Model parameters
+ * Time constant (tau): 200ms
+ * Sample time (dt): 10ms
+ * Response rate (alpha): dt/tau = 0.01/0.2 = 0.05
+ */
 static const float model_gain = 5.0f;     /* Speed per unit input */
-static const float model_alpha = model_dt / model_tau;  /* Response rate */
+static const float model_alpha = 0.05f;   /* Response rate coefficient */
 
 /*============================================================================*/
 /* PUBLIC API IMPLEMENTATION                                                 */
