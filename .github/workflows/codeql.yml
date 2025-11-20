@@ -1,0 +1,43 @@
+name: "CodeQL Security Scanning"
+
+on:
+  push:
+    branches: [ master, main, claude/* ]
+  pull_request:
+    branches: [ master, main ]
+  schedule:
+    # Run weekly on Mondays at 6:00 UTC to catch new vulnerabilities
+    - cron: '0 6 * * 1'
+
+jobs:
+  analyze:
+    name: Analyze C/C++ Code
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'c-cpp' ]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v3
+      with:
+        languages: ${{ matrix.language }}
+        # Build mode: autobuild will automatically detect CMake
+        # If autobuild fails, we can switch to manual build commands
+
+    - name: Autobuild
+      uses: github/codeql-action/autobuild@v3
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v3
+      with:
+        category: "/language:${{matrix.language}}"
