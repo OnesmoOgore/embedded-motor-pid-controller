@@ -6,10 +6,18 @@ set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS OFF)
 
-# Compiler flags
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Werror")
-set(CMAKE_C_FLAGS_DEBUG "-g -O0")
-set(CMAKE_C_FLAGS_RELEASE "-O2 -DNDEBUG")
+# Compiler flags (platform-specific)
+if(MSVC)
+    # MSVC (Windows Visual Studio)
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /W4 /WX")
+    set(CMAKE_C_FLAGS_DEBUG "/Od /Zi")
+    set(CMAKE_C_FLAGS_RELEASE "/O2 /DNDEBUG")
+else()
+    # GCC/Clang (Linux, macOS, MinGW)
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Werror")
+    set(CMAKE_C_FLAGS_DEBUG "-g -O0")
+    set(CMAKE_C_FLAGS_RELEASE "-O2 -DNDEBUG")
+endif()
 
 # Option to build tests
 option(BUILD_TESTS "Build unit tests" ON)
