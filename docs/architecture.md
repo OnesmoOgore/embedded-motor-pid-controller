@@ -35,8 +35,7 @@ embedded-motor-pid-controller/
 ├── docs/
 │   ├── images/           # Documentation assets
 │   ├── BUILD.md          # Build instructions
-│   ├── architecture.md   # This file
-│   ├── ci.md             # CI/CD documentation
+│   ├── architecture.md   # This file (includes CI/CD details)
 │   ├── index.md          # GitHub Pages landing page
 │   └── _config.yml       # Jekyll configuration
 ├── .github/
@@ -621,7 +620,40 @@ pid_init(&motor2_pid, ...);
 
 ---
 
-## 11. Future Roadmap
+## 11. Continuous Integration & Deployment
+
+### CI Workflow
+
+GitHub Actions automatically tests every commit and pull request:
+
+**Build Matrix:**
+- **Platforms:** Ubuntu (latest), Windows (latest)
+- **Python:** 3.11
+- **Total:** 2 parallel jobs per workflow
+
+**Workflow Steps:**
+1. Check out repository
+2. Install Python dependencies
+3. Verify GCC compiler availability
+4. Run simulation script (`sim/pid_simulation.py`)
+5. Upload artifacts:
+   - `log.csv` - Simulation data
+   - `step_response.png` - Response plot
+
+**Accessing Artifacts:**
+1. Navigate to [Actions tab](https://github.com/OnesmoOgore/embedded-motor-pid-controller/actions)
+2. Select a workflow run
+3. Download artifacts named: `pid-simulation-<os>-py<version>`
+4. Extract to view logs and plots
+
+**Quality Gates:**
+- Strict compilation warnings (`-Wall -Wextra -Werror`)
+- Zero-tolerance for warnings
+- Cross-platform verification
+
+---
+
+## 12. Future Roadmap
 
 ### Planned Enhancements
 
@@ -647,7 +679,7 @@ pid_init(&motor2_pid, ...);
 
 ---
 
-## 12. Summary
+## 13. Summary
 
 This architecture demonstrates professional embedded systems development:
 
@@ -674,7 +706,6 @@ This architecture demonstrates professional embedded systems development:
 
 _For detailed implementation instructions, see:_
 - _[Build Instructions](BUILD.md)_
-- _[CI/CD Details](ci.md)_
 - _[Version History](../CHANGELOG.md)_
 
 ---

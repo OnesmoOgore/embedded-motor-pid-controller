@@ -708,8 +708,7 @@ brew install cmake
 
 ## Next Steps
 
-- [Architecture Documentation](architecture.md) - System design
-- [CI/CD Details](ci.md) - Pipeline documentation  
+- [Architecture Documentation](architecture.md) - System design & CI/CD pipeline
 - [CHANGELOG](../CHANGELOG.md) - Version history
 - [API Documentation](api/html/index.html) - After running Doxygen
 
