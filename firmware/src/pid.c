@@ -63,6 +63,8 @@
 /*============================================================================*/
 
 #include "pid.h"
+#include <assert.h>   /* For parameter validation in debug builds */
+#include <stddef.h>   /* For NULL definition */
 
 /*============================================================================*/
 /* PRIVATE HELPER FUNCTIONS                                                  */
@@ -114,6 +116,14 @@ void pid_init(pid_t *pid,
               float out_min,
               float out_max)
 {
+    /* Validate inputs (assertions compile out in release builds) */
+    assert(pid != NULL && "PID structure pointer cannot be NULL");
+    assert(dt > 0.0f && "Sample time must be positive");
+    assert(kp >= 0.0f && "Proportional gain must be non-negative");
+    assert(ki >= 0.0f && "Integral gain must be non-negative");
+    assert(kd >= 0.0f && "Derivative gain must be non-negative");
+    assert(out_min < out_max && "Output min must be less than max");
+
     /* Store configuration parameters */
     pid->kp = kp;
     pid->ki = ki;
@@ -168,6 +178,15 @@ void pid_init_advanced(pid_t *pid,
                       float integrator_max,
                       float derivative_lpf)
 {
+    /* Validate inputs (assertions compile out in release builds) */
+    assert(pid != NULL && "PID structure pointer cannot be NULL");
+    assert(dt > 0.0f && "Sample time must be positive");
+    assert(kp >= 0.0f && "Proportional gain must be non-negative");
+    assert(ki >= 0.0f && "Integral gain must be non-negative");
+    assert(kd >= 0.0f && "Derivative gain must be non-negative");
+    assert(out_min < out_max && "Output min must be less than max");
+    assert(integrator_min < integrator_max && "Integrator min must be less than max");
+
     /* Store configuration parameters */
     pid->kp = kp;
     pid->ki = ki;
