@@ -17,8 +17,7 @@
 
 /* Configuration */
 #define NUM_ITERATIONS  500     /* Simulation steps */
-#define SAMPLE_TIME_MS  10      /* Control loop period (10ms = 100Hz) */
-#define SAMPLE_TIME_S   (SAMPLE_TIME_MS / 1000.0f)
+#define SAMPLE_TIME     0.01f   /* Control loop period: 10ms = 100Hz */
 
 /* PID gains (tuned for simulation model) */
 #define PID_KP   0.8f   /* Proportional gain */
@@ -38,7 +37,7 @@ int main(void)
 
     /* Initialize motor and PID controller */
     motor_init();
-    pid_init(&motor_pid, PID_KP, PID_KI, PID_KD, SAMPLE_TIME_S, OUT_MIN, OUT_MAX);
+    pid_init(&motor_pid, PID_KP, PID_KI, PID_KD, SAMPLE_TIME, OUT_MIN, OUT_MAX);
 
     /* CSV header for simulation output */
     printf("step,setpoint,measurement,output\n");
