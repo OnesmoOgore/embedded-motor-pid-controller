@@ -186,7 +186,13 @@ GitHub Actions automatically tests every commit on Ubuntu and Windows:
 
 This implementation is suitable for commercial embedded products, robotics, and automation systems. All tests passing, cross-platform verified.
 
-**Future Enhancements:** [View roadmap](https://github.com/OnesmoOgore/embedded-motor-pid-controller/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement)
+**Future Enhancements:**
+- Code coverage reporting
+- Auto-tuning algorithms (Ziegler-Nichols)
+- Hardware examples (STM32, ESP32)
+- RTOS integration guide
+
+[View complete roadmap →](docs/architecture.md#12-future-roadmap)
 
 ---
 
