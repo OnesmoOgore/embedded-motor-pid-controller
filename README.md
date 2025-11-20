@@ -68,8 +68,7 @@ embedded-motor-pid-controller/
 ├── docs/             # Documentation
 │   ├── images/       # Documentation images
 │   ├── BUILD.md      # Build instructions
-│   ├── architecture.md  # System architecture
-│   ├── ci.md         # CI/CD documentation
+│   ├── architecture.md  # System architecture & CI/CD
 │   ├── index.md      # GitHub Pages landing page
 │   └── _config.yml   # Jekyll configuration
 ├── .github/
@@ -86,37 +85,16 @@ embedded-motor-pid-controller/
 
 ## 🔨 Building
 
-### Quick Start
-
 ```bash
-# Clone Unity test framework
+# Quick start
 git clone https://github.com/ThrowTheSwitch/Unity.git tests/Unity
-
-# Configure and build
 mkdir build && cd build
 cmake ..
 make
-
-# Run tests
-./test_pid
-# Or use CTest
 ctest --output-on-failure
 ```
 
-### Build Options
-
-```bash
-# Release build (optimized)
-cmake -DCMAKE_BUILD_TYPE=Release ..
-
-# Build without tests
-cmake -DBUILD_TESTS=OFF ..
-
-# Build only library
-cmake -DBUILD_TESTS=OFF -DBUILD_DEMO=OFF ..
-```
-
-For detailed build instructions, see [docs/BUILD.md](docs/BUILD.md).
+**For detailed build instructions, configuration options, and platform-specific guidance, see [docs/BUILD.md](docs/BUILD.md).**
 
 ### MCU Integration
 
@@ -169,50 +147,31 @@ Here is an example step response produced by `sim/pid_simulation.py`:
 
 ---
 
-## 📈 Continuous Integration (CI)
+## 📈 Continuous Integration
 
-GitHub Actions automatically runs two parallel jobs on each push and pull request:
+GitHub Actions automatically tests every commit on Ubuntu and Windows:
+- Builds with strict warnings (`-Wall -Wextra -Werror`)
+- Runs all 12 unit tests
+- Executes Python simulation and generates plots
+- Uploads artifacts (CSV logs, response plots)
 
-### Test Job
-- **Platforms**: Ubuntu, Windows
-- **Actions**:
-  - Builds with CMake
-  - Runs all unit tests via CTest
-  - Fails on compilation warnings or test failures
-
-### Simulation Job
-- **Platforms**: Ubuntu, Windows
-- **Python**: 3.11
-- **Actions**:
-  - Runs Python simulation
-  - Generates step response plots
-  - Uploads artifacts (log.csv, step_response.png)
-
-Browse previous runs and download artifacts in the [Actions tab](../../actions).
+[View CI runs and artifacts](../../actions)
 
 ---
 
-## 🔧 Status
+## 🔧 Project Status
 
-**Current status:** Production-Ready ✅
+**Maturity:** Production-Ready ✅
 
-### Completed
-- ✅ Production-grade PID implementation with anti-windup
-- ✅ Comprehensive unit test suite (12 tests)
-- ✅ Professional CMake build system
-- ✅ Multi-platform CI/CD (Ubuntu, Windows)
-- ✅ Derivative filtering and derivative-on-measurement
-- ✅ Simulation + plotting fully functional
-- ✅ API documentation (Doxygen)
-- ✅ Build and integration guides
+This implementation is suitable for commercial embedded products, robotics, and automation systems. All tests passing, cross-platform verified.
 
-### Future Enhancements
-- Code coverage reporting (gcov/lcov)
-- Gain sweep automation tools
-- More realistic motor dynamics
+**Future Enhancements:**
+- Code coverage reporting
 - Auto-tuning algorithms (Ziegler-Nichols)
-- RTOS integration examples
-- Hardware-in-loop testing guide
+- Hardware examples (STM32, ESP32)
+- RTOS integration guide
+
+[View complete roadmap →](docs/architecture.md#12-future-roadmap)
 
 ---
 
@@ -227,8 +186,7 @@ See [`LICENSE`](LICENSE) for details.
 
 - **[Build Instructions](docs/BUILD.md)** - Comprehensive build guide
 - **[Changelog](CHANGELOG.md)** - Version history and detailed release notes
-- **[Architecture Overview](docs/architecture.md)** - System design
-- **[CI Workflow Details](docs/ci.md)** - CI/CD pipeline
+- **[Architecture Overview](docs/architecture.md)** - System design and CI/CD pipeline
 
 ### API Documentation
 Generate with Doxygen:

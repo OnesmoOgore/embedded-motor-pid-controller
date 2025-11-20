@@ -28,9 +28,9 @@ Features:
 
 Requirements:
     - GCC compiler (for firmware compilation)
-    - Python 3.7+
-    - numpy
-    - matplotlib
+    - Python 3.11+
+    - numpy>=1.24.0
+    - matplotlib>=3.7.0
 
 SPDX-License-Identifier: MIT
 """
@@ -144,8 +144,8 @@ def run_firmware_and_capture_log() -> None:
     The simulation runs for NUM_CONTROL_ITERATIONS steps (defined in main.c),
     typically 1000 steps = 10 seconds at 10ms sample time.
 
-    Output format (CSV, no header):
-        step_index, setpoint, measurement, control_output
+    Output format (CSV with header):
+        step,setpoint,measurement,output
         0, 3.0000, 0.0000, 0.0000
         1, 3.0000, 0.0096, 2.2400
         ...
@@ -200,7 +200,8 @@ def load_log() -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     Reads the CSV output from the firmware simulation and extracts the
     four data columns into numpy arrays for analysis and plotting.
 
-    CSV format (no header):
+    CSV format (with header):
+        Header: step,setpoint,measurement,output
         Column 0: Step index (iteration counter)
         Column 1: Setpoint (target speed)
         Column 2: Measurement (actual motor speed)
@@ -224,8 +225,8 @@ def load_log() -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     print(f"File: {LOG_FILE}")
 
     try:
-        # Load CSV data (delimiter=comma, no header)
-        data = np.loadtxt(LOG_FILE, delimiter=",")
+        # Load CSV data (delimiter=comma, skip header row)
+        data = np.loadtxt(LOG_FILE, delimiter=",", skiprows=1)
     except FileNotFoundError:
         raise FileNotFoundError(
             f"Log file not found: {LOG_FILE}\n"

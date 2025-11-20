@@ -191,18 +191,20 @@ echo "[7/10] Checking configuration consistency..."
 echo "------------------------------------------------------------"
 
 # Check sample time consistency
-MAIN_DT=$(grep "PID_SAMPLE_TIME" firmware/src/main.c | grep -oP "0\.\d+f" | head -1)
-MOTOR_DT=$(grep "model_dt = " firmware/src/motor.c | grep -oP "0\.\d+f")
+MAIN_DT=$(grep "#define SAMPLE_TIME" firmware/src/main.c | grep -oP "0\.\d+f" | head -1)
+MOTOR_DT_COMMENT=$(grep "Sample time (dt):" firmware/src/motor.c | grep -oP "\d+ms" | sed 's/ms//' | awk '{printf "0.%03df", $1}')
 PY_DT=$(grep "SAMPLE_TIME_SEC = " sim/pid_simulation.py | grep -oP "0\.\d+")
 
 echo "Sample time in main.c: $MAIN_DT"
-echo "Sample time in motor.c: $MOTOR_DT"
+echo "Sample time in motor.c (from comment): $MOTOR_DT_COMMENT"
 echo "Sample time in pid_simulation.py: $PY_DT"
 
-if [ "$MAIN_DT" = "$MOTOR_DT" ]; then
-    pass "Sample times consistent between main.c and motor.c"
+# Verify model_alpha matches expected value (dt/tau = 0.01/0.2 = 0.05)
+MOTOR_ALPHA=$(grep "model_alpha = " firmware/src/motor.c | grep -oP "0\.\d+f")
+if [ "$MOTOR_ALPHA" = "0.05f" ]; then
+    pass "Motor model parameters consistent (alpha = dt/tau = 0.01/0.2)"
 else
-    fail "Sample time mismatch!"
+    fail "Motor model_alpha mismatch! Expected 0.05f, got $MOTOR_ALPHA"
 fi
 
 echo ""

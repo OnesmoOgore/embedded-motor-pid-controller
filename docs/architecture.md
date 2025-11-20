@@ -35,8 +35,7 @@ embedded-motor-pid-controller/
 ├── docs/
 │   ├── images/           # Documentation assets
 │   ├── BUILD.md          # Build instructions
-│   ├── architecture.md   # This file
-│   ├── ci.md             # CI/CD documentation
+│   ├── architecture.md   # This file (includes CI/CD details)
 │   ├── index.md          # GitHub Pages landing page
 │   └── _config.yml       # Jekyll configuration
 ├── .github/
@@ -431,25 +430,6 @@ The simulation enables offline analysis of:
 
 ---
 
-## 6. Portability and Extension Points
-
-This architecture is intentionally simple and extendable:
-
-- **Porting to new hardware:**
-  - Only `motor.c/.h` and platform-specific startup code need changes.
-  - PID core remains the same.
-
-- **Extending the controller:**
-  - Support for multiple motors/axes
-  - Additional control modes (e.g., position + velocity)
-  - Feedforward terms or advanced filters
-
-- **Integrating with larger systems:**
-  - Expose a simple API or protocol for higher-level control (e.g., via UART/CAN).
-  - Wrap the firmware in an RTOS-based application with communication tasks.
-
----
-
 ## 8. Continuous Integration & Deployment (CI/CD)
 
 ### 8.1 GitHub Actions Workflow
@@ -528,6 +508,16 @@ Commit/PR Trigger
 - Build logs accessible to all
 - Test failure notifications
 - Pull request integration
+
+### 8.5 Accessing CI Artifacts
+
+**Download Simulation Results:**
+1. Navigate to [Actions tab](https://github.com/OnesmoOgore/embedded-motor-pid-controller/actions)
+2. Select a workflow run
+3. Download artifacts named: `pid-simulation-<os>-py<version>`
+4. Extract to view:
+   - `log.csv` - Time-series simulation data
+   - `step_response.png` - Response plot visualization
 
 ---
 
@@ -674,7 +664,6 @@ This architecture demonstrates professional embedded systems development:
 
 _For detailed implementation instructions, see:_
 - _[Build Instructions](BUILD.md)_
-- _[CI/CD Details](ci.md)_
 - _[Version History](../CHANGELOG.md)_
 
 ---

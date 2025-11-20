@@ -29,10 +29,21 @@ xdg-open docs/api/html/index.html
 start docs/api/html/index.html
 ```
 
-### Online Viewing
+### Online Viewing (GitHub Pages)
 
-API documentation can be hosted on GitHub Pages alongside the main documentation at:
-https://onesmoogore.github.io/embedded-motor-pid-controller/api/html/
+To host API documentation on GitHub Pages:
+
+1. Generate the documentation: `doxygen Doxyfile`
+2. The `docs/api/html/` directory is gitignored by default
+3. To deploy:
+   - Remove `docs/api/html/` from `.gitignore`
+   - Commit the generated HTML files
+   - Enable GitHub Pages with source: `/docs` directory
+   - Access at: `https://onesmoogore.github.io/embedded-motor-pid-controller/api/html/`
+
+**Note:** By default, generated docs are excluded to keep the repo clean.
+
+API documentation can be hosted on GitHub Pages alongside the main documentation at: https://onesmoogore.github.io/embedded-motor-pid-controller/api/html/
 
 ## What's Included
 
