@@ -11,7 +11,7 @@ on:
 
 jobs:
   analyze:
-    name: Analyze C/C++ Code
+    name: Analyze Code (${{ matrix.language }})
     runs-on: ubuntu-latest
     permissions:
       actions: read
@@ -21,7 +21,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [ 'c-cpp' ]
+        language: [ 'c-cpp', 'python' ]
 
     steps:
     - name: Checkout repository
@@ -31,8 +31,8 @@ jobs:
       uses: github/codeql-action/init@v3
       with:
         languages: ${{ matrix.language }}
-        # Build mode: autobuild will automatically detect CMake
-        # If autobuild fails, we can switch to manual build commands
+        # Build mode: autobuild automatically detects CMake for C/C++
+        # Python is interpreted and doesn't require building
 
     - name: Autobuild
       uses: github/codeql-action/autobuild@v3
