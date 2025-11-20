@@ -47,7 +47,6 @@ include:
   - CHANGELOG.md
   - BUILD.md
   - architecture.md
-  - ci.md
 
 exclude:
   - Gemfile

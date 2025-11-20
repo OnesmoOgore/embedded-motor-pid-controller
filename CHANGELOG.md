@@ -15,8 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CI artifacts: `log.csv`, `step_response.png`
 - Documentation:
   - `README.md` with features, build instructions, badges, and example plot
-  - `docs/architecture.md` detailing system architecture
-  - `docs/ci.md` describing CI workflow
+  - `docs/architecture.md` detailing system architecture and CI/CD workflow
 - Example step-response image under `docs/images/`
 
 ### Improved
