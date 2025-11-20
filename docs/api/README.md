@@ -43,6 +43,8 @@ To host API documentation on GitHub Pages:
 
 **Note:** By default, generated docs are excluded to keep the repo clean.
 
+API documentation can be hosted on GitHub Pages alongside the main documentation at: https://onesmoogore.github.io/embedded-motor-pid-controller/api/html/
+
 ## What's Included
 
 The API documentation includes:
