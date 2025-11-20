@@ -60,5 +60,60 @@ int main(void)
         printf("%d,%.4f,%.4f,%.4f\n", step, SETPOINT, measurement, output);
     }
 
-    return 0;
+    /*------------------------------------------------------------------------*/
+    /* Shutdown Phase (simulation only)                                     */
+    /*------------------------------------------------------------------------*/
+
+    /* For simulation: Program exits normally
+     * For embedded: Typically never reaches here (infinite loop above)
+     *
+     * If shutdown is needed (embedded):
+     * - Stop motor safely (ramp down, then disable)
+     * - Save configuration to non-volatile memory
+     * - Enter low-power mode
+     */
+
+    return 0;  /* Success (simulation mode only) */
+
+    /*------------------------------------------------------------------------*/
+    /* Example Embedded Implementation (Timer Interrupt)                    */
+    /*------------------------------------------------------------------------*/
+    /*
+     * // Global PID instance (accessible from interrupt)
+     * pid_t g_motor_pid;
+     * float g_setpoint = 1000.0f;  // Target RPM
+     *
+     * void system_init(void) {
+     *     motor_init();
+     *     pid_init(&g_motor_pid, 1.0f, 0.5f, 0.1f, 0.01f, -100.0f, 100.0f);
+     *
+     *     // Configure timer for 10ms periodic interrupt
+     *     TIM2_Init(100);  // 100Hz = 10ms period
+     *     TIM2_EnableInterrupt();
+     * }
+     *
+     * // Timer interrupt - called every 10ms
+     * void TIM2_IRQHandler(void) {
+     *     float speed = motor_get_speed();
+     *     float output = pid_compute(&g_motor_pid, g_setpoint, speed);
+     *     motor_set_output(output);
+     *
+     *     TIM2_ClearInterruptFlag();
+     * }
+     *
+     * int main(void) {
+     *     system_init();
+     *     while (1) {
+     *         // Main loop handles non-time-critical tasks:
+     *         // - User interface
+     *         // - Communication
+     *         // - Data logging
+     *         // - Fault monitoring
+     *     }
+     * }
+     */
 }
+
+/*============================================================================*/
+/* END OF FILE                                                               */
+/*============================================================================*/
