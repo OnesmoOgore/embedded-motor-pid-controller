@@ -1,0 +1,37 @@
+name: Quality Gate
+
+on:
+  push:
+    branches: [ main, 'claude/**' ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  quality-check:
+    name: Comprehensive Quality Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install CMake
+        uses: lukka/get-cmake@latest
+
+      - name: Clone Unity test framework
+        run: git clone https://github.com/ThrowTheSwitch/Unity.git tests/Unity
+
+      - name: Run quality check script
+        run: |
+          chmod +x quality_check.sh
+          ./quality_check.sh
+
+      - name: Upload build logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: quality-check-logs
+          path: |
+            build.log
+            test.log
+            demo.log
