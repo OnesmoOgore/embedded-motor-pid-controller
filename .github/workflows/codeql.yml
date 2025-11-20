@@ -26,18 +26,24 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+      with:
+        submodules: recursive
 
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@v3
+      uses: github/codeql-action/init@v4
       with:
         languages: ${{ matrix.language }}
-        # Build mode: autobuild automatically detects CMake for C/C++
-        # Python is interpreted and doesn't require building
 
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v3
+    # Manual build for C/C++ (Python doesn't need building)
+    - name: Build C/C++ Code
+      if: matrix.language == 'c-cpp'
+      run: |
+        mkdir build
+        cd build
+        cmake ..
+        cmake --build .
 
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v3
+      uses: github/codeql-action/analyze@v4
       with:
         category: "/language:${{matrix.language}}"
