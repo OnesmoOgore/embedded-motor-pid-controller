@@ -85,37 +85,16 @@ embedded-motor-pid-controller/
 
 ## 🔨 Building
 
-### Quick Start
-
 ```bash
-# Clone Unity test framework
+# Quick start
 git clone https://github.com/ThrowTheSwitch/Unity.git tests/Unity
-
-# Configure and build
 mkdir build && cd build
 cmake ..
 make
-
-# Run tests
-./test_pid
-# Or use CTest
 ctest --output-on-failure
 ```
 
-### Build Options
-
-```bash
-# Release build (optimized)
-cmake -DCMAKE_BUILD_TYPE=Release ..
-
-# Build without tests
-cmake -DBUILD_TESTS=OFF ..
-
-# Build only library
-cmake -DBUILD_TESTS=OFF -DBUILD_DEMO=OFF ..
-```
-
-For detailed build instructions, see [docs/BUILD.md](docs/BUILD.md).
+**For detailed build instructions, configuration options, and platform-specific guidance, see [docs/BUILD.md](docs/BUILD.md).**
 
 ### MCU Integration
 

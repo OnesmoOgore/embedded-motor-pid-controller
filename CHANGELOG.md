@@ -76,10 +76,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ---
 
 ## [Unreleased]
-### Planned
+### Added
 - Code coverage reporting (gcov/lcov)
 - Gain sweep automation tools
-- More realistic motor dynamics model
 - Auto-tuning algorithms (Ziegler-Nichols)
-- RTOS integration examples
+- RTOS integration examples (FreeRTOS, Zephyr)
 - Hardware-in-loop testing guide
+
+### Changed
+- More realistic motor dynamics model (inertia, friction, back-EMF)

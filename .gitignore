@@ -86,3 +86,7 @@ tests/Unity/
 # Log files and temporary data
 *.log
 *.tmp
+
+# Backup files
+*.bak
+*.backup

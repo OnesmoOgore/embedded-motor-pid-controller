@@ -40,7 +40,7 @@ typedef struct {
 
     /* Internal state (modified during operation) */
     float integrator;          /**< Integral accumulator */
-    float prev_error;          /**< Previous error (for future use) */
+    float prev_error;          /**< Previous error (reserved for future extensions) */
     float prev_measurement;    /**< Previous measurement (for derivative) */
     float derivative_filtered; /**< Filtered derivative value */
 } pid_t;

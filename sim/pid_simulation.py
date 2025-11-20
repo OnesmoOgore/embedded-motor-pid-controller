@@ -28,9 +28,9 @@ Features:
 
 Requirements:
     - GCC compiler (for firmware compilation)
-    - Python 3.7+
-    - numpy
-    - matplotlib
+    - Python 3.11+
+    - numpy>=1.24.0
+    - matplotlib>=3.7.0
 
 SPDX-License-Identifier: MIT
 """

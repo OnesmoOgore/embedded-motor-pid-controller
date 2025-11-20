@@ -390,6 +390,8 @@ pid_init(&motor_pid,
          -100.0f, 100.0f);  // Output limits
 ```
 
+**Note**: The example gains shown above (1.0/0.5/0.1) differ from the firmware defaults (0.8/0.3/0.05) to demonstrate how tuning affects system response. The firmware uses conservatively tuned values that provide stable performance with minimal overshoot.
+
 Rebuild and re-run simulation to see effects.
 
 ---
