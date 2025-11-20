@@ -169,50 +169,15 @@ Here is an example step response produced by `sim/pid_simulation.py`:
 
 ---
 
-## 📈 Continuous Integration (CI)
+## 📈 Continuous Integration
 
-GitHub Actions automatically runs two parallel jobs on each push and pull request:
+GitHub Actions automatically tests every commit on Ubuntu and Windows:
+- Builds with strict warnings (`-Wall -Wextra -Werror`)
+- Runs all 12 unit tests
+- Executes Python simulation and generates plots
+- Uploads artifacts (CSV logs, response plots)
 
-### Test Job
-- **Platforms**: Ubuntu, Windows
-- **Actions**:
-  - Builds with CMake
-  - Runs all unit tests via CTest
-  - Fails on compilation warnings or test failures
-
-### Simulation Job
-- **Platforms**: Ubuntu, Windows
-- **Python**: 3.11
-- **Actions**:
-  - Runs Python simulation
-  - Generates step response plots
-  - Uploads artifacts (log.csv, step_response.png)
-
-Browse previous runs and download artifacts in the [Actions tab](../../actions).
-
----
-
-## 🔧 Status
-
-**Current status:** Production-Ready ✅
-
-### Completed
-- ✅ Production-grade PID implementation with anti-windup
-- ✅ Comprehensive unit test suite (12 tests)
-- ✅ Professional CMake build system
-- ✅ Multi-platform CI/CD (Ubuntu, Windows)
-- ✅ Derivative filtering and derivative-on-measurement
-- ✅ Simulation + plotting fully functional
-- ✅ API documentation (Doxygen)
-- ✅ Build and integration guides
-
-### Future Enhancements
-- Code coverage reporting (gcov/lcov)
-- Gain sweep automation tools
-- More realistic motor dynamics
-- Auto-tuning algorithms (Ziegler-Nichols)
-- RTOS integration examples
-- Hardware-in-loop testing guide
+[View CI runs and artifacts](../../actions)
 
 ---
 
@@ -227,8 +192,7 @@ See [`LICENSE`](LICENSE) for details.
 
 - **[Build Instructions](docs/BUILD.md)** - Comprehensive build guide
 - **[Changelog](CHANGELOG.md)** - Version history and detailed release notes
-- **[Architecture Overview](docs/architecture.md)** - System design
-- **[CI Workflow Details](docs/ci.md)** - CI/CD pipeline
+- **[Architecture Overview](docs/architecture.md)** - System design and CI/CD pipeline
 
 ### API Documentation
 Generate with Doxygen:
