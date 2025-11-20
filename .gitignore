@@ -76,7 +76,6 @@ ehthumbs.db
 # Doxygen-generated documentation
 html/
 latex/
-docs/api/html/
 docs/api/latex/
 # Keep the API documentation README
 !docs/api/README.md
