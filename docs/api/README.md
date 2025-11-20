@@ -31,19 +31,28 @@ start docs/api/html/index.html
 
 ### Online Viewing (GitHub Pages)
 
-To host API documentation on GitHub Pages:
+The `docs/api/html/` directory is **gitignored by default** to keep the repository clean.
 
-1. Generate the documentation: `doxygen Doxyfile`
-2. The `docs/api/html/` directory is gitignored by default
-3. To deploy:
-   - Remove `docs/api/html/` from `.gitignore`
-   - Commit the generated HTML files
-   - Enable GitHub Pages with source: `/docs` directory
-   - Access at: `https://onesmoogore.github.io/embedded-motor-pid-controller/api/html/`
+**To deploy API documentation to GitHub Pages:**
 
-**Note:** By default, generated docs are excluded to keep the repo clean.
+**Option 1: Manual Deployment (Not Recommended)**
+1. Generate docs: `doxygen Doxyfile`
+2. Temporarily remove `docs/api/html/` from `.gitignore`
+3. Commit and push the generated HTML
+4. Restore `.gitignore` to original state
 
-API documentation can be hosted on GitHub Pages alongside the main documentation at: https://onesmoogore.github.io/embedded-motor-pid-controller/api/html/
+**Option 2: GitHub Actions Automated Deployment (Recommended)**
+Create `.github/workflows/deploy-docs.yml` to automatically:
+- Generate docs with Doxygen
+- Deploy to `gh-pages` branch
+- Serve at: `https://onesmoogore.github.io/embedded-motor-pid-controller/api/html/`
+
+**Benefits of Option 2:**
+- HTML files never committed to main branch
+- Auto-updates on every push
+- Keeps repository clean and lightweight
+
+**Note:** Documentation is currently available locally only. GitHub Pages deployment is optional.
 
 ## What's Included
 
