@@ -191,7 +191,7 @@ echo "[7/10] Checking configuration consistency..."
 echo "------------------------------------------------------------"
 
 # Check sample time consistency
-MAIN_DT=$(grep "PID_SAMPLE_TIME" firmware/src/main.c | grep -oP "0\.\d+f" | head -1)
+MAIN_DT=$(grep "#define SAMPLE_TIME" firmware/src/main.c | grep -oP "0\.\d+f" | head -1)
 MOTOR_DT=$(grep "model_dt = " firmware/src/motor.c | grep -oP "0\.\d+f")
 PY_DT=$(grep "SAMPLE_TIME_SEC = " sim/pid_simulation.py | grep -oP "0\.\d+")
 
