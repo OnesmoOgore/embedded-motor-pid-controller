@@ -76,6 +76,13 @@ ehthumbs.db
 # Doxygen-generated documentation
 html/
 latex/
+docs/api/html/
+docs/api/latex/
+# Keep the API documentation README
+!docs/api/README.md
+
+# Testing framework (Unity - cloned at build time)
+tests/Unity/
 
 # Log files and temporary data
 *.log

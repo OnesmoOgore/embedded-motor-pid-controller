@@ -1,4 +1,69 @@
+# Jekyll configuration for GitHub Pages
 theme: jekyll-theme-cayman
 title: Embedded Motor PID Controller
-description: Firmware architecture, simulation tools, and control system design.
+description: Production-ready PID controller with comprehensive testing, professional build system, and advanced control algorithms
 markdown: GFM
+
+# Site metadata
+author: Onesmo Ogore
+url: https://onesmoogore.github.io
+baseurl: /embedded-motor-pid-controller
+
+# GitHub repository
+repository: OnesmoOgore/embedded-motor-pid-controller
+
+# Version
+version: 1.0.0
+
+# Google Analytics
+google_analytics: G-Q1E976J5EY
+
+# Social links (optional - update with your profiles)
+github_username: OnesmoOgore
+
+# Build settings
+plugins:
+  - jekyll-github-metadata
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+# Collections
+collections:
+  docs:
+    output: true
+    permalink: /:collection/:path/
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: "docs"
+    values:
+      layout: "default"
+
+# Include/Exclude
+include:
+  - README.md
+  - CHANGELOG.md
+  - BUILD.md
+  - architecture.md
+  - ci.md
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - vendor
+  - .gitignore
+  - api/  # Exclude Doxygen output
+
+# SEO
+lang: en-US
+tagline: Professional embedded C PID controller implementation
+keywords: pid controller, embedded systems, motor control, c programming, unit testing, cmake, embedded c, control systems, robotics
+
+# Additional settings
+show_downloads: true
+github:
+  is_project_page: true
+  repository_name: embedded-motor-pid-controller
+  repository_url: https://github.com/OnesmoOgore/embedded-motor-pid-controller
