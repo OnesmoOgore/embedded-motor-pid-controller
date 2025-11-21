@@ -1,0 +1,50 @@
+name: Deploy Documentation
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'src/**'
+      - 'include/**'
+      - 'Doxyfile'
+      - '.github/workflows/deploy-docs.yml'
+  workflow_dispatch:  # Allow manual trigger
+
+permissions:
+  contents: write  # Required to push to gh-pages
+
+jobs:
+  deploy-docs:
+    name: Generate and Deploy Doxygen Documentation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install Doxygen and Graphviz
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y doxygen graphviz
+
+      - name: Generate documentation
+        run: |
+          doxygen Doxyfile
+          echo "Documentation generated at docs/api/html/"
+          ls -la docs/api/
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/api
+          publish_branch: gh-pages
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+          commit_message: 'docs: update API documentation from ${{ github.sha }}'
+          force_orphan: true  # Keep gh-pages branch clean
+
+      - name: Output deployment URL
+        run: |
+          echo "📚 Documentation deployed!"
+          echo "🌐 Visit: https://onesmoogore.github.io/embedded-motor-pid-controller/api/html/"
