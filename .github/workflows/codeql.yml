@@ -2,9 +2,9 @@ name: "CodeQL Security Scanning"
 
 on:
   push:
-    branches: [ master, main, claude/* ]
+    branches: [ main, claude/* ]
   pull_request:
-    branches: [ master, main ]
+    branches: [ main ]
   schedule:
     # Run weekly on Mondays at 6:00 UTC to catch new vulnerabilities
     - cron: '0 6 * * 1'
