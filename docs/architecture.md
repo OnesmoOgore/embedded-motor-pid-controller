@@ -1,3 +1,14 @@
+---
+layout: default
+title: System Architecture
+---
+
+<nav style="background: #f5f5f5; padding: 10px 20px; border-radius: 5px; margin-bottom: 20px;">
+  <a href="./" style="text-decoration: none; color: #0366d6;">← Back to Documentation Home</a> |
+  <a href="BUILD.html" style="text-decoration: none; color: #0366d6;">Build Instructions</a> |
+  <a href="api/html/index.html" style="text-decoration: none; color: #0366d6;">API Reference</a>
+</nav>
+
 # System Architecture Overview
 
 This document describes the high-level architecture and module breakdown of the `embedded-motor-pid-controller` project.

@@ -1,3 +1,14 @@
+---
+layout: default
+title: Build Instructions
+---
+
+<nav style="background: #f5f5f5; padding: 10px 20px; border-radius: 5px; margin-bottom: 20px;">
+  <a href="./" style="text-decoration: none; color: #0366d6;">← Back to Documentation Home</a> |
+  <a href="architecture.html" style="text-decoration: none; color: #0366d6;">Architecture</a> |
+  <a href="api/html/index.html" style="text-decoration: none; color: #0366d6;">API Reference</a>
+</nav>
+
 # Build Instructions
 
 This document provides comprehensive instructions for building, testing, and integrating the **Embedded Motor PID Controller** project.
