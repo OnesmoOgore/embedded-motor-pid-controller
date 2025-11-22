@@ -2,9 +2,9 @@ name: Build and Test PID Controller
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, 'claude/**' ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, 'claude/**' ]
 
 jobs:
   test:
