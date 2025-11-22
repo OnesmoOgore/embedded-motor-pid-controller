@@ -10,13 +10,25 @@ on:
       - '.github/workflows/deploy-docs.yml'
   workflow_dispatch:  # Allow manual trigger
 
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
-  contents: write  # Required to push to gh-pages
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
   deploy-docs:
     name: Generate and Deploy Doxygen Documentation
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       - name: Check out repository
@@ -31,20 +43,29 @@ jobs:
         run: |
           doxygen Doxyfile
           echo "Documentation generated at docs/api/html/"
-          ls -la docs/api/
+          ls -la docs/api/html/
+
+      - name: Add .nojekyll file
+        run: |
+          # Disable Jekyll processing for GitHub Pages
+          # This is critical for Doxygen files with underscores
+          touch docs/api/html/.nojekyll
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Upload the HTML directory directly (not the parent docs/api)
+          path: './docs/api/html'
 
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs/api
-          publish_branch: gh-pages
-          user_name: 'github-actions[bot]'
-          user_email: 'github-actions[bot]@users.noreply.github.com'
-          commit_message: 'docs: update API documentation from ${{ github.sha }}'
-          force_orphan: true  # Keep gh-pages branch clean
+        id: deployment
+        uses: actions/deploy-pages@v4
 
       - name: Output deployment URL
         run: |
-          echo "📚 Documentation deployed!"
-          echo "🌐 Visit: https://onesmoogore.github.io/embedded-motor-pid-controller/api/html/"
+          echo "📚 Documentation deployed successfully!"
+          echo "🌐 Visit: https://onesmoogore.github.io/embedded-motor-pid-controller/"
+          echo "📖 Direct link: https://onesmoogore.github.io/embedded-motor-pid-controller/index.html"
