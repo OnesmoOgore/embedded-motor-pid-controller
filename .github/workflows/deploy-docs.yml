@@ -4,11 +4,12 @@ on:
   push:
     branches: [ main ]
     paths:
-      - 'src/**'
-      - 'include/**'
-      - 'Doxyfile'
-      - '.github/workflows/deploy-docs.yml'
-  workflow_dispatch:  # Allow manual trigger
+      - 'firmware/src/**'        # C source changes (for Doxygen)
+      - 'firmware/include/**'    # Header changes (for Doxygen)
+      - 'docs/**'                # Documentation changes (Jekyll markdown, images, config)
+      - 'Doxyfile'               # Doxygen configuration changes
+      - '.github/workflows/deploy-docs.yml'  # Workflow changes
+  workflow_dispatch:  # Allow manual trigger for testing
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
@@ -39,33 +40,177 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y doxygen graphviz
 
-      - name: Generate documentation
+      - name: Generate Doxygen documentation
         run: |
           doxygen Doxyfile
-          echo "Documentation generated at docs/api/html/"
-          ls -la docs/api/html/
+          echo "✅ Doxygen documentation generated at docs/api/html/"
+          ls -la docs/api/html/ | head -20
 
-      - name: Add .nojekyll file
+      - name: Add .nojekyll to Doxygen output
         run: |
-          # Disable Jekyll processing for GitHub Pages
-          # This is critical for Doxygen files with underscores
+          # Prevent Jekyll from processing Doxygen HTML files
+          # This is critical for files with underscores (e.g., _r_e_a_d_m_e_8md.html)
           touch docs/api/html/.nojekyll
+          echo "✅ Created .nojekyll file in docs/api/html/"
+
+      - name: Validate documentation structure
+        run: |
+          echo "📋 Validating documentation files exist..."
+          echo ""
+
+          # Check Jekyll source files
+          echo "1️⃣ Checking Jekyll markdown files..."
+          test -f docs/index.md && echo "✅ docs/index.md exists" || (echo "❌ docs/index.md MISSING" && exit 1)
+          test -f docs/BUILD.md && echo "✅ docs/BUILD.md exists" || (echo "❌ docs/BUILD.md MISSING" && exit 1)
+          test -f docs/architecture.md && echo "✅ docs/architecture.md exists" || (echo "❌ docs/architecture.md MISSING" && exit 1)
+          test -f docs/_config.yml && echo "✅ docs/_config.yml exists" || (echo "❌ docs/_config.yml MISSING" && exit 1)
+          echo ""
+
+          # Check Doxygen output
+          echo "2️⃣ Checking Doxygen HTML files..."
+          test -f docs/api/html/index.html && echo "✅ docs/api/html/index.html exists" || (echo "❌ docs/api/html/index.html MISSING" && exit 1)
+          test -f docs/api/html/.nojekyll && echo "✅ docs/api/html/.nojekyll exists" || (echo "❌ docs/api/html/.nojekyll MISSING" && exit 1)
+          echo ""
+
+          # Check images
+          echo "3️⃣ Checking image assets..."
+          test -f docs/images/step_response_example.png && echo "✅ docs/images/step_response_example.png exists" || echo "⚠️  docs/images/step_response_example.png missing"
+          echo ""
+
+          # Verify Doxygen generated files with underscores
+          echo "4️⃣ Checking for Doxygen files with underscores..."
+          if ls docs/api/html/_*.html 1> /dev/null 2>&1; then
+            echo "✅ Found Doxygen files with underscores (will be protected by .nojekyll)"
+            ls docs/api/html/_*.html | head -5
+          else
+            echo "⚠️  No underscore files found (unusual for Doxygen)"
+          fi
+          echo ""
+
+          # Validate links in index.md
+          echo "5️⃣ Validating internal links in docs/index.md..."
+          ERRORS=0
+
+          # Check if linked files exist (after Jekyll processing they'll become .html)
+          grep -o 'href="[^"]*"' docs/index.md | sed 's/href="//;s/"//' | while read -r link; do
+            # Skip external links
+            if [[ "$link" =~ ^https?:// ]]; then
+              continue
+            fi
+
+            # Convert expected Jekyll output to source file
+            case "$link" in
+              "BUILD.html")
+                if [ ! -f "docs/BUILD.md" ]; then
+                  echo "❌ Link target BUILD.html (from BUILD.md) - source file missing"
+                  ERRORS=$((ERRORS + 1))
+                else
+                  echo "✅ Link BUILD.html → docs/BUILD.md exists"
+                fi
+                ;;
+              "architecture.html")
+                if [ ! -f "docs/architecture.md" ]; then
+                  echo "❌ Link target architecture.html (from architecture.md) - source file missing"
+                  ERRORS=$((ERRORS + 1))
+                else
+                  echo "✅ Link architecture.html → docs/architecture.md exists"
+                fi
+                ;;
+              "api/html/index.html")
+                if [ ! -f "docs/api/html/index.html" ]; then
+                  echo "❌ Link target api/html/index.html - file missing"
+                  ERRORS=$((ERRORS + 1))
+                else
+                  echo "✅ Link api/html/index.html → docs/api/html/index.html exists"
+                fi
+                ;;
+            esac
+          done
+          echo ""
+
+          # Check _config.yml doesn't exclude api/
+          echo "6️⃣ Checking Jekyll configuration..."
+          if grep -q "exclude:.*api/" docs/_config.yml; then
+            echo "❌ CRITICAL: _config.yml excludes api/ folder - Doxygen won't be deployed!"
+            exit 1
+          else
+            echo "✅ _config.yml does not exclude api/ folder"
+          fi
+          echo ""
+
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "📊 Documentation Structure Summary"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo ""
+          echo "docs/"
+          echo "├── _config.yml              (Jekyll config - Cayman theme)"
+          echo "├── index.md                 (Landing page → index.html)"
+          echo "├── BUILD.md                 (Build guide → BUILD.html)"
+          echo "├── architecture.md          (Architecture → architecture.html)"
+          echo "├── images/"
+          echo "│   └── step_response_example.png"
+          echo "└── api/"
+          echo "    └── html/"
+          echo "        ├── .nojekyll        (Protects underscore files)"
+          echo "        ├── index.html       (Doxygen main page)"
+          echo "        └── [100+ Doxygen files]"
+          echo ""
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "🌐 Expected URLs After Deployment"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo ""
+          echo "Base: https://onesmoogore.github.io/embedded-motor-pid-controller/"
+          echo ""
+          echo "Jekyll Pages (processed from .md):"
+          echo "  ✓ /                              (from index.md)"
+          echo "  ✓ /BUILD.html                    (from BUILD.md)"
+          echo "  ✓ /architecture.html             (from architecture.md)"
+          echo ""
+          echo "Static Files (copied as-is):"
+          echo "  ✓ /api/html/index.html           (Doxygen main)"
+          echo "  ✓ /api/html/_*.html              (Protected by .nojekyll)"
+          echo "  ✓ /images/step_response_example.png"
+          echo ""
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      - name: Upload artifact
+      - name: Upload documentation artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload the HTML directory directly (not the parent docs/api)
-          path: './docs/api/html'
+          # Upload entire docs folder - Jekyll will process .md files, leave api/html/ as-is
+          path: './docs'
 
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
 
-      - name: Output deployment URL
+      - name: Output deployment summary
         run: |
-          echo "📚 Documentation deployed successfully!"
-          echo "🌐 Visit: https://onesmoogore.github.io/embedded-motor-pid-controller/"
-          echo "📖 Direct link: https://onesmoogore.github.io/embedded-motor-pid-controller/index.html"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "📚 Documentation Deployment Complete!"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo ""
+          echo "🌐 Main Site: https://onesmoogore.github.io/embedded-motor-pid-controller/"
+          echo ""
+          echo "📖 Documentation Pages:"
+          echo "  ├─ Landing Page:    https://onesmoogore.github.io/embedded-motor-pid-controller/"
+          echo "  ├─ Build Guide:     https://onesmoogore.github.io/embedded-motor-pid-controller/BUILD.html"
+          echo "  ├─ Architecture:    https://onesmoogore.github.io/embedded-motor-pid-controller/architecture.html"
+          echo "  └─ API Reference:   https://onesmoogore.github.io/embedded-motor-pid-controller/api/html/index.html"
+          echo ""
+          echo "🖼️  Assets:"
+          echo "  └─ Images:          https://onesmoogore.github.io/embedded-motor-pid-controller/images/"
+          echo ""
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo ""
+          echo "✅ Validation Steps:"
+          echo "  1. Visit the main site and verify Jekyll theme is applied"
+          echo "  2. Click 'Build Instructions' link → should load BUILD.html"
+          echo "  3. Click 'Architecture' link → should load architecture.html"
+          echo "  4. Click 'API Reference' link → should load api/html/index.html"
+          echo "  5. Verify images load correctly"
+          echo "  6. Test Doxygen navigation (files with underscores should work)"
+          echo ""
+          echo "Page URL: ${{ steps.deployment.outputs.page_url }}"
