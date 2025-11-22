@@ -1,0 +1,7 @@
+var searchData=
+[
+  ['pid_5fcompute_0',['pid_compute',['../pid_8h.html#ace9aeed1847327f037a508004256c5ff',1,'pid_compute(pid_t *pid, float setpoint, float measurement):&#160;pid.c'],['../pid_8c.html#ace9aeed1847327f037a508004256c5ff',1,'pid_compute(pid_t *pid, float setpoint, float measurement):&#160;pid.c']]],
+  ['pid_5finit_1',['pid_init',['../pid_8h.html#a7ca66adb6f7af4251e435544603136d7',1,'pid_init(pid_t *pid, float kp, float ki, float kd, float dt, float out_min, float out_max):&#160;pid.c'],['../pid_8c.html#a7ca66adb6f7af4251e435544603136d7',1,'pid_init(pid_t *pid, float kp, float ki, float kd, float dt, float out_min, float out_max):&#160;pid.c']]],
+  ['pid_5finit_5fadvanced_2',['pid_init_advanced',['../pid_8h.html#a6cc4ce0411d2b8f56ec3f7b260647719',1,'pid_init_advanced(pid_t *pid, float kp, float ki, float kd, float dt, float out_min, float out_max, float integrator_min, float integrator_max, float derivative_lpf):&#160;pid.c'],['../pid_8c.html#a6cc4ce0411d2b8f56ec3f7b260647719',1,'pid_init_advanced(pid_t *pid, float kp, float ki, float kd, float dt, float out_min, float out_max, float integrator_min, float integrator_max, float derivative_lpf):&#160;pid.c']]],
+  ['pid_5freset_3',['pid_reset',['../pid_8h.html#a620b252f00551b4421c40aed3ebae0d7',1,'pid_reset(pid_t *pid):&#160;pid.c'],['../pid_8c.html#a620b252f00551b4421c40aed3ebae0d7',1,'pid_reset(pid_t *pid):&#160;pid.c']]]
+];

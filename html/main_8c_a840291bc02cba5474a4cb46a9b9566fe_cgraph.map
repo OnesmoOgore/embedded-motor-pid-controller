@@ -1,0 +1,17 @@
+<map id="main" name="main">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,129,60,155"/>
+<area shape="rect" id="Node000002" href="$motor_8c.html#a849ac541cab3791078dfe5abf4fbb75c" title="Get current motor speed." alt="" coords="109,5,244,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="38,128,64,85,83,61,106,40,114,35,117,39,110,44,87,65,68,88,43,130"/>
+<area shape="rect" id="Node000003" href="$motor_8c.html#aa2a5af0fb9c1fa2047a5ca0af110f806" title="Initialize motor simulation." alt="" coords="132,55,221,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="49,127,107,89,121,83,123,87,109,94,52,131"/>
+<area shape="rect" id="Node000004" href="$motor_8c.html#a62ff061b48d5aa078b435c9b95801be3" title="Set motor control output." alt="" coords="108,104,245,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="60,135,94,129,95,134,61,140"/>
+<area shape="rect" id="Node000005" href="$motor_8c.html#ab51ce8445239cd2dd72a1c886bc78d8f" title="Update motor simulation (call periodically)" alt="" coords="120,153,233,179"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="61,144,107,152,106,157,60,149"/>
+<area shape="rect" id="Node000006" href="$pid_8c.html#ace9aeed1847327f037a508004256c5ff" title="Calculate PID control output." alt="" coords="123,203,230,228"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="53,153,109,188,126,195,124,200,107,192,50,157"/>
+<area shape="rect" id="Node000008" href="$pid_8c.html#a7ca66adb6f7af4251e435544603136d7" title="Initialize PID controller with standard configuration." alt="" coords="141,252,212,277"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="43,154,69,195,88,217,110,237,130,249,127,253,106,241,84,221,65,198,39,157"/>
+<area shape="rect" id="Node000007" href="$pid_8c.html#a3677975a17489e728e5be5d03a864bab" title=" " alt="" coords="293,203,356,228"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="230,213,280,213,280,218,230,218"/>
+</map>

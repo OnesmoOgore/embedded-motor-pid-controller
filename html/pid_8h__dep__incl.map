@@ -1,0 +1,7 @@
+<map id="firmware/include/pid.h" name="firmware/include/pid.h">
+<area shape="rect" id="Node000001" title="Production&#45;ready PID controller for embedded systems." alt="" coords="81,5,248,31"/>
+<area shape="rect" id="Node000002" href="$main_8c.html" title="PID motor controller demo application." alt="" coords="5,79,156,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="142,42,96,80,93,76,139,38"/>
+<area shape="rect" id="Node000003" href="$pid_8c.html" title="Implementation of production&#45;ready PID controller." alt="" coords="181,79,319,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="190,37,238,76,234,80,187,41"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="firmware/src/motor.c" name="firmware/src/motor.c">
+<area shape="rect" id="Node000001" title="Simple first&#45;order DC motor simulation model." alt="" coords="5,5,161,31"/>
+<area shape="rect" id="Node000002" href="$motor_8h.html" title="Simple DC motor simulation for testing PID control." alt="" coords="47,79,119,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="86,31,86,65,81,65,81,31"/>
+</map>
