@@ -53,7 +53,8 @@ exclude:
   - Gemfile.lock
   - vendor
   - .gitignore
-  - api/  # Exclude Doxygen output
+  # Note: api/html/ is NOT excluded - it contains Doxygen HTML that must be served
+  # The .nojekyll file in api/html/ prevents Jekyll from processing those files
 
 # SEO
 lang: en-US
