@@ -1,3 +1,14 @@
+---
+layout: default
+title: System Architecture
+---
+
+<nav style="background: #f5f5f5; padding: 10px 20px; border-radius: 5px; margin-bottom: 20px;">
+  <a href="./" style="text-decoration: none; color: #0366d6;">← Back to Documentation Home</a> |
+  <a href="build.html" style="text-decoration: none; color: #0366d6;">Build Instructions</a> |
+  <a href="api/html/index.html" style="text-decoration: none; color: #0366d6;">API Reference</a>
+</nav>
+
 # System Architecture Overview
 
 This document describes the high-level architecture and module breakdown of the `embedded-motor-pid-controller` project.
@@ -34,7 +45,10 @@ embedded-motor-pid-controller/
 │   └── pid_simulation.py # Python simulation & plotting
 ├── docs/
 │   ├── images/           # Documentation assets
-│   ├── BUILD.md          # Build instructions
+│   ├── api/              # API documentation (Doxygen)
+│   │   ├── README.md     # Generation instructions
+│   │   └── html/         # Generated HTML (Doxygen output, deployed to GitHub Pages)
+│   ├── build.md          # Build instructions
 │   ├── architecture.md   # This file (includes CI/CD details)
 │   ├── index.md          # GitHub Pages landing page
 │   └── _config.yml       # Jekyll configuration
@@ -663,7 +677,7 @@ This architecture demonstrates professional embedded systems development:
 ---
 
 _For detailed implementation instructions, see:_
-- _[Build Instructions](BUILD.md)_
+- _[Build Instructions](build.md)_
 - _[Version History](../CHANGELOG.md)_
 
 ---

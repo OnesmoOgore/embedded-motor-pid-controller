@@ -45,7 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Derivative-on-measurement (eliminates derivative kick)
   - Optional low-pass filtering for derivative term
 - **Documentation**:
-  - `docs/BUILD.md` - Comprehensive build instructions
+  - `docs/build.md` - Comprehensive build instructions
   - `Doxyfile` - API documentation configuration
   - `requirements.txt` - Python dependencies
 - **Extended PID structure** with integrator limits and derivative filtering
