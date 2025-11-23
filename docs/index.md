@@ -19,7 +19,7 @@ title: Embedded Motor PID Controller
 <div style="border: 1px solid #ddd; padding: 20px; border-radius: 8px;">
   <h3>🚀 Quick Start</h3>
   <p>Get up and running in minutes</p>
-  <a href="BUILD.html">Build Instructions →</a>
+  <a href="build.html">Build Instructions →</a>
 </div>
 
 <div style="border: 1px solid #ddd; padding: 20px; border-radius: 8px;">

@@ -61,7 +61,7 @@ jobs:
           # Check Jekyll source files
           echo "1️⃣ Checking Jekyll markdown files..."
           test -f docs/index.md && echo "✅ docs/index.md exists" || (echo "❌ docs/index.md MISSING" && exit 1)
-          test -f docs/BUILD.md && echo "✅ docs/BUILD.md exists" || (echo "❌ docs/BUILD.md MISSING" && exit 1)
+          test -f docs/build.md && echo "✅ docs/build.md exists" || (echo "❌ docs/build.md MISSING" && exit 1)
           test -f docs/architecture.md && echo "✅ docs/architecture.md exists" || (echo "❌ docs/architecture.md MISSING" && exit 1)
           test -f docs/_config.yml && echo "✅ docs/_config.yml exists" || (echo "❌ docs/_config.yml MISSING" && exit 1)
           echo ""
@@ -100,12 +100,12 @@ jobs:
 
             # Convert expected Jekyll output to source file
             case "$link" in
-              "BUILD.html")
-                if [ ! -f "docs/BUILD.md" ]; then
-                  echo "❌ Link target BUILD.html (from BUILD.md) - source file missing"
+              "build.html")
+                if [ ! -f "docs/build.md" ]; then
+                  echo "❌ Link target build.html (from build.md) - source file missing"
                   ERRORS=$((ERRORS + 1))
                 else
-                  echo "✅ Link BUILD.html → docs/BUILD.md exists"
+                  echo "✅ Link build.html → docs/build.md exists"
                 fi
                 ;;
               "architecture.html")
@@ -145,7 +145,7 @@ jobs:
           echo "docs/"
           echo "├── _config.yml              (Jekyll config - Cayman theme)"
           echo "├── index.md                 (Landing page → index.html)"
-          echo "├── BUILD.md                 (Build guide → BUILD.html)"
+          echo "├── build.md                 (Build guide → build.html)"
           echo "├── architecture.md          (Architecture → architecture.html)"
           echo "├── images/"
           echo "│   └── step_response_example.png"
@@ -163,7 +163,7 @@ jobs:
           echo ""
           echo "Jekyll Pages (processed from .md):"
           echo "  ✓ /                              (from index.md)"
-          echo "  ✓ /BUILD.html                    (from BUILD.md)"
+          echo "  ✓ /build.html                    (from build.md)"
           echo "  ✓ /architecture.html             (from architecture.md)"
           echo ""
           echo "Static Files (copied as-is):"
@@ -196,7 +196,7 @@ jobs:
           echo ""
           echo "📖 Documentation Pages:"
           echo "  ├─ Landing Page:    https://onesmoogore.github.io/embedded-motor-pid-controller/"
-          echo "  ├─ Build Guide:     https://onesmoogore.github.io/embedded-motor-pid-controller/BUILD.html"
+          echo "  ├─ Build Guide:     https://onesmoogore.github.io/embedded-motor-pid-controller/build.html"
           echo "  ├─ Architecture:    https://onesmoogore.github.io/embedded-motor-pid-controller/architecture.html"
           echo "  └─ API Reference:   https://onesmoogore.github.io/embedded-motor-pid-controller/api/html/index.html"
           echo ""
@@ -207,7 +207,7 @@ jobs:
           echo ""
           echo "✅ Validation Steps:"
           echo "  1. Visit the main site and verify Jekyll theme is applied"
-          echo "  2. Click 'Build Instructions' link → should load BUILD.html"
+          echo "  2. Click 'Build Instructions' link → should load build.html"
           echo "  3. Click 'Architecture' link → should load architecture.html"
           echo "  4. Click 'API Reference' link → should load api/html/index.html"
           echo "  5. Verify images load correctly"

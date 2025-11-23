@@ -45,7 +45,7 @@ defaults:
 include:
   - README.md
   - CHANGELOG.md
-  - BUILD.md
+  - build.md
   - architecture.md
 
 exclude:

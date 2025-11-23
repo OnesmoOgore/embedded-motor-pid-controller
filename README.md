@@ -67,7 +67,7 @@ embedded-motor-pid-controller/
 │   └── pid_simulation.py
 ├── docs/             # Documentation
 │   ├── images/       # Documentation images
-│   ├── BUILD.md      # Build instructions
+│   ├── build.md      # Build instructions
 │   ├── architecture.md  # System architecture & CI/CD
 │   ├── index.md      # GitHub Pages landing page
 │   └── _config.yml   # Jekyll configuration
@@ -94,7 +94,7 @@ make
 ctest --output-on-failure
 ```
 
-**For detailed build instructions, configuration options, and platform-specific guidance, see [docs/BUILD.md](docs/BUILD.md).**
+**For detailed build instructions, configuration options, and platform-specific guidance, see [docs/build.md](docs/build.md).**
 
 ### MCU Integration
 
@@ -184,7 +184,7 @@ See [`LICENSE`](LICENSE) for details.
 
 ## 📚 Documentation
 
-- **[Build Instructions](docs/BUILD.md)** - Comprehensive build guide
+- **[Build Instructions](docs/build.md)** - Comprehensive build guide
 - **[Changelog](CHANGELOG.md)** - Version history and detailed release notes
 - **[Architecture Overview](docs/architecture.md)** - System design and CI/CD pipeline
 
