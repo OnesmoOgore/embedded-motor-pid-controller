@@ -174,7 +174,7 @@ This implementation is suitable for commercial embedded products, robotics, and 
 - Hardware examples (STM32, ESP32)
 - RTOS integration guide
 
-[View complete roadmap →](docs/architecture.md#12-future-roadmap)
+[View complete roadmap →](/docs/architecture.md#11-future-roadmap)
 
 ---
 
