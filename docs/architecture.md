@@ -45,6 +45,9 @@ embedded-motor-pid-controller/
 │   └── pid_simulation.py # Python simulation & plotting
 ├── docs/
 │   ├── images/           # Documentation assets
+│   ├── api/              # API documentation (Doxygen)
+│   │   ├── README.md     # Generation instructions
+│   │   └── html/         # Generated HTML (Doxygen output, deployed to GitHub Pages)
 │   ├── build.md          # Build instructions
 │   ├── architecture.md   # This file (includes CI/CD details)
 │   ├── index.md          # GitHub Pages landing page

@@ -67,6 +67,9 @@ embedded-motor-pid-controller/
 │   └── pid_simulation.py
 ├── docs/             # Documentation
 │   ├── images/       # Documentation images
+│   ├── api/          # API documentation
+│   │   ├── README.md # Doxygen generation instructions
+│   │   └── html/     # Generated HTML (not in git)
 │   ├── build.md      # Build instructions
 │   ├── architecture.md  # System architecture & CI/CD
 │   ├── index.md      # GitHub Pages landing page
