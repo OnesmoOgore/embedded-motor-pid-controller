@@ -45,7 +45,27 @@ jobs:
           echo "🔍 Verifying Graphviz installation..."
           which dot
           dot -V
-          echo "✅ Graphviz (dot) is installed and accessible"
+
+          # Test that dot can actually generate SVG
+          echo "Testing dot SVG generation..."
+          echo 'digraph test { A -> B; }' | dot -Tsvg > /tmp/test.svg
+          if [ -s /tmp/test.svg ]; then
+            echo "✅ Graphviz (dot) is installed and can generate SVG files"
+          else
+            echo "❌ ERROR: dot installed but cannot generate SVG"
+            exit 1
+          fi
+
+          # Verify Doxyfile DOT_PATH setting
+          DOT_PATH_VALUE=$(grep "^DOT_PATH" Doxyfile | awk '{print $NF}')
+          echo "DOT_PATH in Doxyfile: '${DOT_PATH_VALUE}'"
+          if [ -z "$DOT_PATH_VALUE" ]; then
+            echo "⚠️  WARNING: DOT_PATH is empty - Doxygen may fail to find dot"
+          elif [ -x "$DOT_PATH_VALUE" ]; then
+            echo "✅ DOT_PATH points to executable file: $DOT_PATH_VALUE"
+          else
+            echo "⚠️  WARNING: DOT_PATH set but file not executable: $DOT_PATH_VALUE"
+          fi
 
       - name: Generate Doxygen documentation
         run: |
@@ -67,12 +87,40 @@ jobs:
           echo "🔍 Checking for generated SVG call graphs..."
           SVG_COUNT=$(find docs/api/html -name "*.svg" -type f | wc -l)
           echo "Found $SVG_COUNT SVG files"
+
           if [ $SVG_COUNT -gt 0 ]; then
             echo "✅ SVG graph files generated successfully"
-            echo "Sample SVG files:"
-            find docs/api/html -name "*call*.svg" -o -name "*caller*.svg" | head -5
+            echo ""
+            echo "Sample call graph SVG files:"
+            find docs/api/html -name "*_cgraph.svg" | head -5 | while read svg; do
+              echo "  - $(basename $svg)"
+            done
+            echo ""
+            echo "Sample caller graph SVG files:"
+            find docs/api/html -name "*_icgraph.svg" | head -5 | while read svg; do
+              echo "  - $(basename $svg)"
+            done
+
+            # Check for DOT files that weren't converted
+            DOT_COUNT=$(find docs/api/html -name "*.dot" -type f | wc -l)
+            if [ $DOT_COUNT -gt 0 ] && [ $SVG_COUNT -eq 0 ]; then
+              echo "❌ ERROR: Found .dot files but no .svg files - conversion failed!"
+              exit 1
+            fi
           else
-            echo "⚠️  Warning: No SVG files found - graphs may not be generated"
+            echo "❌ ERROR: No SVG files found - graphs were not generated!"
+            echo ""
+            echo "Checking for .dot files..."
+            DOT_COUNT=$(find docs/api/html -name "*.dot" -type f | wc -l)
+            if [ $DOT_COUNT -gt 0 ]; then
+              echo "Found $DOT_COUNT .dot files - this means Doxygen tried to generate"
+              echo "graphs but dot failed to convert them to SVG. Check dot configuration."
+              find docs/api/html -name "*.dot" | head -5
+            else
+              echo "No .dot files found either - Doxygen did not attempt graph generation."
+              echo "Check HAVE_DOT, CALL_GRAPH, CALLER_GRAPH settings in Doxyfile."
+            fi
+            exit 1
           fi
 
           echo ""
