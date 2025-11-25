@@ -40,10 +40,42 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y doxygen graphviz
 
+      - name: Verify Graphviz installation
+        run: |
+          echo "🔍 Verifying Graphviz installation..."
+          which dot
+          dot -V
+          echo "✅ Graphviz (dot) is installed and accessible"
+
       - name: Generate Doxygen documentation
         run: |
-          doxygen Doxyfile
+          doxygen Doxyfile 2>&1 | tee doxygen.log
+          echo ""
           echo "✅ Doxygen documentation generated at docs/api/html/"
+          echo ""
+
+          # Check for any dot-related warnings or errors
+          if grep -i "warning.*dot" doxygen.log; then
+            echo "⚠️  Warning: Found dot-related warnings in Doxygen output"
+          fi
+          if grep -i "error.*dot" doxygen.log; then
+            echo "❌ Error: Found dot-related errors in Doxygen output"
+            exit 1
+          fi
+
+          # Verify SVG files were generated
+          echo "🔍 Checking for generated SVG call graphs..."
+          SVG_COUNT=$(find docs/api/html -name "*.svg" -type f | wc -l)
+          echo "Found $SVG_COUNT SVG files"
+          if [ $SVG_COUNT -gt 0 ]; then
+            echo "✅ SVG graph files generated successfully"
+            echo "Sample SVG files:"
+            find docs/api/html -name "*call*.svg" -o -name "*caller*.svg" | head -5
+          else
+            echo "⚠️  Warning: No SVG files found - graphs may not be generated"
+          fi
+
+          echo ""
           ls -la docs/api/html/ | head -20
 
       - name: Add .nojekyll to Doxygen output
