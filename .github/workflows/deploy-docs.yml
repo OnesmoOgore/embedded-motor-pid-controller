@@ -253,14 +253,49 @@ jobs:
           echo ""
           echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
+      - name: Setup Ruby for Jekyll
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1'
+          bundler-cache: false
+
+      - name: Create Gemfile for Jekyll
+        run: |
+          cd docs
+          cat > Gemfile << 'EOF'
+          source "https://rubygems.org"
+          gem "github-pages", group: :jekyll_plugins
+          gem "jekyll-github-metadata"
+          gem "jekyll-sitemap"
+          gem "jekyll-seo-tag"
+          EOF
+
+      - name: Install Jekyll dependencies
+        run: |
+          cd docs
+          bundle install
+
+      - name: Build Jekyll site
+        run: |
+          cd docs
+          echo "🔨 Building Jekyll site..."
+          bundle exec jekyll build --verbose
+          echo "✅ Jekyll site built successfully"
+          echo ""
+          echo "Checking built files in _site/:"
+          ls -la _site/ | head -20
+          echo ""
+          echo "Checking for HTML files:"
+          find _site -name "*.html" -type f | head -10
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
       - name: Upload documentation artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload entire docs folder - Jekyll will process .md files, leave api/html/ as-is
-          path: './docs'
+          # Upload Jekyll-built site from docs/_site
+          path: './docs/_site'
 
       - name: Deploy to GitHub Pages
         id: deployment
