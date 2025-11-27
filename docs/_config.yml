@@ -36,6 +36,12 @@ defaults:
 
 # Include/Exclude
 # Jekyll will automatically copy api/ and images/ folders to _site/ as static assets
+# IMPORTANT: Jekyll ignores files starting with underscores by default
+# We must explicitly include Doxygen-generated underscore files (e.g., _r_e_a_d_m_e_8md.html)
+# See: https://jekyllrb.com/docs/configuration/
+include:
+  - api/html/_r_e_a_d_m_e_8md.html
+
 exclude:
   - Gemfile
   - Gemfile.lock
