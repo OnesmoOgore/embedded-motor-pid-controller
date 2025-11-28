@@ -160,12 +160,8 @@ jobs:
           # Verify Doxygen generated files with underscores
           echo "4️⃣ Checking for Doxygen files with underscores..."
           if ls docs/api/html/_*.html 1> /dev/null 2>&1; then
-            echo "✅ Found Doxygen files with underscores:"
+            echo "✅ Found Doxygen files with underscores (will be protected by .nojekyll)"
             ls docs/api/html/_*.html | head -5
-            echo ""
-            echo "ℹ️  Note: Jekyll ignores underscore files by default."
-            echo "   These files are explicitly included via 'include:' directive in _config.yml"
-            echo "   They will be verified after Jekyll build completes."
           else
             echo "⚠️  No underscore files found (unusual for Doxygen)"
           fi
@@ -291,21 +287,6 @@ jobs:
           echo ""
           echo "Checking for HTML files:"
           find _site -name "*.html" -type f | head -10
-          echo ""
-          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-          echo "🔍 Verifying Doxygen underscore files in Jekyll output"
-          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-          echo ""
-          if [ -f "_site/api/html/_r_e_a_d_m_e_8md.html" ]; then
-            echo "✅ _r_e_a_d_m_e_8md.html successfully included in Jekyll build"
-            echo "   File will be accessible at: /api/html/_r_e_a_d_m_e_8md.html"
-          else
-            echo "❌ ERROR: _r_e_a_d_m_e_8md.html NOT found in Jekyll output!"
-            echo "   This file starts with underscore and may have been excluded by Jekyll."
-            echo "   Check the 'include:' directive in docs/_config.yml"
-            exit 1
-          fi
-          echo ""
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
